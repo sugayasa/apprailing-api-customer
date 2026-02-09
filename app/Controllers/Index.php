@@ -21,12 +21,12 @@ class Index extends BaseController
 
     public function main()
     {
-        return view('main');
+        return $this->failForbidden('[E-AUTH-000] Akses ditolak');
     }
 
     public function loginPage()
     {
-        return view('login');
+        return $this->failForbidden('[E-AUTH-000] Akses ditolak');
     }
 
     public function mainPage()
