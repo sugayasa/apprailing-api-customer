@@ -62,7 +62,7 @@ class MainOperation extends Model
 
 	public function generateEmptyResult()
     {
-		return array("data"=>[], "datastart"=>0, "dataend"=>0, "datatotal"=>0, "pagetotal"=>0);
+		return ["data"=>[], "datastart"=>0, "dataend"=>0, "datatotal"=>0, "pagetotal"=>0];
 	}
 
     public function insertDataTable($tableName, $arrInsert)

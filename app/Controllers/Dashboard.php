@@ -58,11 +58,46 @@ class Dashboard extends ResourceController
             ]
         ];
 
+        $dataMerk       =   [
+            [
+                "idMerk"    =>  hashidEncode(1),
+                "namaMerk"  =>  "Rich Railing",
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'richrailing.jpg'
+            ],
+            [
+                "idMerk"    =>  hashidEncode(2),
+                "namaMerk"  =>  "Railingku",
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'railingku.jpg'
+            ],
+            [
+                "idMerk"    =>  hashidEncode(3),
+                "namaMerk"  =>  "Weezy",
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'weezy.jpg'
+            ]
+        ];
+
+        $dataOrder      =   [
+            [
+                "idOrder"       =>  hashidEncode(1),
+                "statusOrder"   =>  "Order Selesai",
+                "tanggalWaktu"  =>  "23 Desember 2025 10:00",
+                "fotoBarang"    =>  [
+                    BASE_URL_ASSETS_PHOTO_BARANG.'railing-balkon-minimalis.jpg',
+                    BASE_URL_ASSETS_PHOTO_BARANG.'railing-balkon-minimalis.jpg'
+                ],
+                "jumlahBarang"  =>  4,
+                "kodeOrder"     =>  "#ORD-0010007",
+                "totalNominal"  =>  "4.300.000"
+            ]
+        ];
+
         return $this
                 ->setResponseFormat('json')
                 ->respond([
                     "profileData"   =>  $profileData,
-                    "slideBanner"   =>  $slideBanner
+                    "slideBanner"   =>  $slideBanner,
+                    "dataMerk"      =>  $dataMerk,
+                    "dataOrder"     =>  $dataOrder
                 ]);
     }
 }

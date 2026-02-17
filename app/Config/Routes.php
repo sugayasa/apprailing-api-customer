@@ -71,6 +71,11 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
     $functionRoute =   'Dashboard';
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
 });
+
+$routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'Feed';
+    $routes->post('getDataFeed', $functionRoute.'::getDataFeed');
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing
