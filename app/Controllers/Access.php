@@ -167,7 +167,7 @@ class Access extends ResourceController
         }
 
         $newToken       =   encodeJWTToken($tokenPayload);
-        $optionHelper   =   $this->getDataOption();
+        $optionHelper   =   isset($token) && $token != "" ? $this->getDataOption() : [];
         return $this->setResponseFormat('json')
                     ->respond([
                         'token'         =>  $newToken,
