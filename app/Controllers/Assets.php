@@ -67,4 +67,34 @@ class Assets extends ResourceController
             ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
             ->setBody($fileContent);
     }
+
+    public function customerAvatar($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR.$namaFile;
+        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR  .'default.jpg';
+
+        $mimeType       =   mime_content_type($fullFilePath);
+        $fileContent    =   file_get_contents($fullFilePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+            ->setBody($fileContent);
+    }
+
+    public function customerSlideBanner($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BANNER.$namaFile;
+        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BANNER  .'default.jpg';
+
+        $mimeType       =   mime_content_type($fullFilePath);
+        $fileContent    =   file_get_contents($fullFilePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+            ->setBody($fileContent);
+    }
 }

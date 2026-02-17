@@ -95,6 +95,8 @@ class Auth implements FilterInterface
                 }
 
                 $accessModel->setLastActivityUserAdmin($idSession, $request->currentDateTime);
+            } else {
+                if($arguments && $arguments[0] != 'allowNotLoggedIn') return throwResponseUnauthorized('Anda tidak diizinkan melakukan aksi ini');
             }
         } catch (\Throwable $th) {
             return throwResponseUnauthorized('[E-AUTH-001] Token tidak valid');

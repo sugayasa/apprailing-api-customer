@@ -69,17 +69,23 @@ class Access extends ResourceController
         $captchaCode        =   generateRandomCharacter(4, 3);
 
         $userData   =   array(
-            "nama"      =>  "",
-            "email"     =>  "",
-            "nomorHP"   =>  ""
+            "avatar"    =>  BASE_URL_ASSETS_CUSTOMER_AVATAR."default.jpg",
+            "nama"      =>  "Guest",
+            "email"     =>  "-",
+            "nomorHP"   =>  "-",
+            "kota"      =>  APP_DEFAULT_ALAMAT_KOTA,
+            "propinsi"  =>  APP_DEFAULT_ALAMAT_PROPINSI
         );
 
         $tokenPayload   =   array(
             "idCustomer"        =>  0,
             "idSession"         =>  0,
+            "avatar"            =>  BASE_URL_ASSETS_CUSTOMER_AVATAR."default.jpg",
             "nama"              =>  "",
             "email"             =>  "",
             "nomorHP"           =>  "",
+            "kota"              =>  APP_DEFAULT_ALAMAT_KOTA,
+            "propinsi"          =>  APP_DEFAULT_ALAMAT_PROPINSI,
             "hardwareID"        =>  $hardwareID,
             "userTimeZoneOffset"=>  $userTimeZoneOffset,
             "platform"          =>  $platform,
@@ -128,20 +134,29 @@ class Access extends ResourceController
                         $accessModel->update($idSession, ['DATETIMELOGIN' => $timeCreate]);
                         
                         $detailCustomerDB   =   $accessModel->getDetailCustomer($idCustomerDB);
+                        $avatarDB           =   BASE_URL_ASSETS_CUSTOMER_AVATAR.(isset($detailCustomerDB['AVATAR']) ? $detailCustomerDB['AVATAR'] : 'default.jpg');
                         $namaDB             =   isset($detailCustomerDB['NAMA']) ? $detailCustomerDB['NAMA'] : '';
                         $emailDB            =   isset($detailCustomerDB['EMAIL']) ? $detailCustomerDB['EMAIL'] : '';
                         $nomorHPDB          =   isset($detailCustomerDB['NOMORHP']) ? $detailCustomerDB['NOMORHP'] : '';
+                        $kotaDB             =   isset($detailCustomerDB['KOTA']) ? $detailCustomerDB['KOTA'] : APP_DEFAULT_ALAMAT_KOTA;
+                        $propinsiDB         =   isset($detailCustomerDB['PROPINSI']) ? $detailCustomerDB['PROPINSI'] : APP_DEFAULT_ALAMAT_PROPINSI;
                         $userData           =   [
-                            "nama"      =>   $namaDB,
-                            "email"     =>   $emailDB,
-                            "nomorHP"   =>   $nomorHPDB
+                            "avatar"    =>  $avatarDB,
+                            "nama"      =>  $namaDB,
+                            "email"     =>  $emailDB,
+                            "nomorHP"   =>  $nomorHPDB,
+                            "kota"      =>  $kotaDB,
+                            "propinsi"  =>  $propinsiDB
                         ];
 
                         $tokenPayload['idCustomer'] =   $idCustomerDB;
                         $tokenPayload['idSession']  =   $idSession;
+                        $tokenPayload['avatar']     =   $avatarDB;
                         $tokenPayload['nama']       =   $namaDB;
                         $tokenPayload['email']      =   $emailDB;
                         $tokenPayload['nomorHP']    =   $nomorHPDB;
+                        $tokenPayload['kota']       =   $kotaDB;
+                        $tokenPayload['propinsi']   =   $propinsiDB;
                         $statusCode                 =   200;
                         $responseMsg                =   'Sesi aktif, lanjutkan';
                     } else {
@@ -458,7 +473,7 @@ class Access extends ResourceController
     {
         $accessModel        =   new AccessModel();
         $dataSession        =   $accessModel->where('IDCUSTOMER', $idCustomer)->where('PLATFORM', $this->platform)->get()->getRowArray();
-        $hardwareID         =   $this->hardwareIDHeader;
+        $hardwareID         =   strtoupper($this->hardwareIDHeader);
         $platform           =   $this->platform;
         $idSession          =   0;
         $arrInsUpdSession   =   [
@@ -536,7 +551,7 @@ class Access extends ResourceController
         try {
             $dataDecode     =   decodeJWTToken($token);
             $idSession      =   $dataDecode->idSession;
-            $hardwareID     =   $dataDecode->hardwareID;
+            $hardwareID     =   strtoupper($dataDecode->hardwareID);
             $accessModel    =   new AccessModel();
             $userAdminDataDB=   $accessModel
                                 ->where("IDSESSION", $idSession)

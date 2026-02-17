@@ -81,6 +81,9 @@ if(!function_exists('generateCaptchaImage')){
             $contents = ob_get_contents();
             ob_end_clean();
 
+            http_response_code(200);
+            header('Content-Type: text/plain');
+            
             $dataUri = "data:image/jpeg;base64," . base64_encode($contents);
             echo $dataUri;
         } catch (\Throwable $th) {

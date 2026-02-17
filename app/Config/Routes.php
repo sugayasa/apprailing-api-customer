@@ -37,6 +37,10 @@ $routes->post('access/check', 'Access::check');
 $routes->get('access/logout/(:any)', 'Access::logout/$1');
 $routes->get('access/captcha/(:any)', 'Access::captcha/$1');
 
+$routes->get('databaseTool/migrate', 'DatabaseTool::migrate', ['filter' => 'databaseTool']);
+$routes->get('databaseTool/rollback', 'DatabaseTool::rollback', ['filter' => 'databaseTool']);
+$routes->get('databaseTool/seed/(:any)', 'DatabaseTool::seed/$1', ['filter' => 'databaseTool']);
+
 $routes->group('access', ['filter' => 'auth:mustNotBeLoggedIn'], function($routes) {
     $routes->post('submitEmailPhoneNumber', 'Access::loginSubmitEmailPhoneNumber', ['filter' => 'auth:mustNotBeLoggedIn']);
     $routes->post('submitOTP', 'Access::loginSubmitOTP', ['filter' => 'auth:mustNotBeLoggedIn']);
@@ -59,9 +63,11 @@ $routes->group('assets', [], function($routes) {
     $routes->get('logoMerk/(:any)', 'Assets::logoMerk/$1');
     $routes->get('logoMarketplace/(:any)', 'Assets::logoMarketplace/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
+    $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
+    $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
 });
 
-$routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+$routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Dashboard';
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
 });

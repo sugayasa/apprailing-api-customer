@@ -153,6 +153,9 @@ defined('APP_TIMEZONE')                                 || define('APP_TIMEZONE'
 defined('APP_OTP_EXPIRED_MINUTES')                      || define('APP_OTP_EXPIRED_MINUTES', $_ENV['APP_OTP_EXPIRED_MINUTES'] ?: '120');
 defined('APP_MAIN_DATABASE_NAME')                       || define('APP_MAIN_DATABASE_NAME', $_ENV['APP_MAIN_DATABASE_NAME'] ?: 'db_main');
 defined('APP_MAIN_DATABASE_DEFAULT')                    || define('APP_MAIN_DATABASE_DEFAULT', $_ENV['APP_MAIN_DATABASE_DEFAULT'] ?: 'db_default');
+defined('APP_DEFAULT_ALAMAT_KOTA')                      || define('APP_DEFAULT_ALAMAT_KOTA', $_ENV['APP_DEFAULT_ALAMAT_KOTA'] ?: 'Jakarta Pusat');
+defined('APP_DEFAULT_ALAMAT_PROPINSI')                  || define('APP_DEFAULT_ALAMAT_PROPINSI', $_ENV['APP_DEFAULT_ALAMAT_PROPINSI'] ?: 'DKI Jakarta');
+defined('APP_DATABASE_TOOL_SECRET_KEY')                 || define('APP_DATABASE_TOOL_SECRET_KEY', $_ENV['APP_DATABASE_TOOL_SECRET_KEY'] ?: 'secretkey');
 
 defined('MAX_INACTIVE_SESSION_MINUTES')                 || define('MAX_INACTIVE_SESSION_MINUTES', $_ENV['MAX_INACTIVE_SESSION_MINUTES'] ?: 60);
 defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQUEST', $_ENV['LOG_USER_REQUEST'] ?: false);
@@ -165,6 +168,8 @@ defined('BASE_URL_ASSETS_CUSTOM')                       || define('BASE_URL_ASSE
 defined('BASE_URL_ASSETS_LOGO_MERK')                    || define('BASE_URL_ASSETS_LOGO_MERK', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_LOGO_MERK_PATH'] ?: 'logoMerk/');
 defined('BASE_URL_ASSETS_LOGO_MARKETPLACE')             || define('BASE_URL_ASSETS_LOGO_MARKETPLACE', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_LOGO_MARKETPLACE_PATH'] ?: 'logoMarketplace/');
 defined('BASE_URL_ASSETS_PHOTO_BARANG')                 || define('BASE_URL_ASSETS_PHOTO_BARANG', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_PHOTO_BARANG_PATH'] ?: 'photoBarang/');
+defined('BASE_URL_ASSETS_CUSTOMER_AVATAR')              || define('BASE_URL_ASSETS_CUSTOMER_AVATAR', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_CUSTOMER_AVATAR_PATH'] ?: 'customerAvatar/');
+defined('BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER')        || define('BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER_PATH'] ?: 'customerSlideBanner/');
 
 defined('OPTION_HOURS')						            || define('OPTION_HOURS', $arrHours);
 defined('OPTION_HOUR_STRARR')                           || define('OPTION_HOUR_STRARR', $strArrHour);
@@ -180,6 +185,8 @@ defined('PATH_STORAGE_FILE_LOGO_MERK')                  || define('PATH_STORAGE_
 defined('PATH_STORAGE_FILE_LOGO_MARKETPLACE')           || define('PATH_STORAGE_FILE_LOGO_MARKETPLACE', PATH_STORAGE_FILE.$_ENV['PATH_STORAGE_FILE_LOGO_MARKETPLACE'] ?: PATH_STORAGE_FILE.'logoMarketplace/');
 defined('PATH_STORAGE_PHOTO')                           || define('PATH_STORAGE_PHOTO', PATH_STORAGE.$_ENV['PATH_STORAGE_PHOTO'] ?: PATH_STORAGE.'photo_storage/');
 defined('PATH_STORAGE_PHOTO_BARANG')                    || define('PATH_STORAGE_PHOTO_BARANG', PATH_STORAGE_PHOTO.$_ENV['PATH_STORAGE_PHOTO_BARANG'] ?: PATH_STORAGE_PHOTO.'barang/');
+defined('PATH_STORAGE_CUSTOMER_AVATAR')                 || define('PATH_STORAGE_CUSTOMER_AVATAR', PATH_STORAGE_PHOTO.$_ENV['PATH_STORAGE_CUSTOMER_AVATAR'] ?: PATH_STORAGE_PHOTO.'customer_avatar/');
+defined('PATH_STORAGE_CUSTOMER_SLIDE_BANNER')           || define('PATH_STORAGE_CUSTOMER_SLIDE_BANNER', PATH_STORAGE_PHOTO.$_ENV['PATH_STORAGE_CUSTOMER_SLIDE_BANNER'] ?: PATH_STORAGE_PHOTO.'slide_banner/');
 
 defined('EMAIL_SMTP_HOST')								|| define('EMAIL_SMTP_HOST', $_ENV['EMAIL_SMTP_HOST'] ?: 'default_email_host.com');
 defined('EMAIL_SMTP_PORT')								|| define('EMAIL_SMTP_PORT', $_ENV['EMAIL_SMTP_PORT'] ?: 587);

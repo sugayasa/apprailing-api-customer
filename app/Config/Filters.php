@@ -10,6 +10,7 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\Auth;
 use App\Filters\Cors;
+use App\Filters\AuthDatabaseTool;
 
 class Filters extends BaseConfig
 {
@@ -25,6 +26,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'auth'          => Auth::class,
         'cors'          => Cors::class,
+        'databaseTool'  => AuthDatabaseTool::class,
     ];
 
     /**

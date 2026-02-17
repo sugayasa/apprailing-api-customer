@@ -55,9 +55,11 @@ class AccessModel extends Model
 
     public function getDetailCustomer($idCustomer)
     {
-        $this->select('NAMA, EMAIL, NOMORHP');
-        $this->from('m_customer', true);
-        $this->where('IDCUSTOMER', $idCustomer);
+        $this->select('A.AVATAR, A.NAMA, A.EMAIL, A.NOMORHP, B.ALAMAT, B.KOTA, B.PROPINSI');
+        $this->from('m_customer AS A', true);
+        $this->join('m_customeralamat AS B', 'A.IDCUSTOMER = B.IDCUSTOMER AND B.ISALAMATUTAMA = 1', 'LEFT');
+        $this->where('A.IDCUSTOMER', $idCustomer);
+        $this->groupBy('A.IDCUSTOMER');
 
         return $this->get()->getRowArray();
     }
