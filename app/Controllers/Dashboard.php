@@ -62,17 +62,17 @@ class Dashboard extends ResourceController
             [
                 "idMerk"    =>  hashidEncode(1),
                 "namaMerk"  =>  "Rich Railing",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'richrailing.jpg'
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'richrailing.png'
             ],
             [
                 "idMerk"    =>  hashidEncode(2),
                 "namaMerk"  =>  "Railingku",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'railingku.jpg'
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'railingku.png'
             ],
             [
                 "idMerk"    =>  hashidEncode(3),
                 "namaMerk"  =>  "Weezy",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'weezy.jpg'
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'weezy.png'
             ]
         ];
 

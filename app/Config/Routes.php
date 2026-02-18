@@ -83,6 +83,17 @@ $routes->group('katalog', ['filter' => 'auth:allowNotLoggedIn'], function($route
     $routes->post('getDataProduk', $functionRoute.'::getDataProduk');
     $routes->post('getDetailProduk', $functionRoute.'::getDetailProduk');
 });
+
+$routes->group('profile', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'Profile';
+    $routes->post('getDetailProfile', $functionRoute.'::getDetailProfile');
+    
+    $routes->group('alamat', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $functionRoute =   'Profile';
+        $routes->post('getDataAlamat', $functionRoute.'::getDataAlamat');
+        $routes->post('saveDataAlamat', $functionRoute.'::saveDataAlamat');
+    });
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing
