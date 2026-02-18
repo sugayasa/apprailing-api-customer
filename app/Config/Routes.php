@@ -65,6 +65,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
+    $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
@@ -75,6 +76,12 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
 $routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Feed';
     $routes->post('getDataFeed', $functionRoute.'::getDataFeed');
+});
+
+$routes->group('katalog', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'Katalog';
+    $routes->post('getDataProduk', $functionRoute.'::getDataProduk');
+    $routes->post('getDetailProduk', $functionRoute.'::getDetailProduk');
 });
 /*
  * --------------------------------------------------------------------
