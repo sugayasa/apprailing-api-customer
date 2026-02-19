@@ -620,12 +620,20 @@ class Access extends ResourceController
     private function getDataOption()
     {
         $accessModel            =   new AccessModel();
+        $dataRegional           =   encodeDatabaseObjectResultKey($accessModel->getDataRegional(), 'ID');
         $dataMerk               =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
         $dataBarangKategori     =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
+        $dataEkspedisi          =   encodeDatabaseObjectResultKey($accessModel->getDataEkspedisi(), 'ID');
+        $dataKanalPembayaran    =   encodeDatabaseObjectResultKey($accessModel->getDataKanalPembayaran(), 'ID');
+        $dataStatusTransaksi    =   encodeDatabaseObjectResultKey($accessModel->getDataStatusTransaksi(), 'ID');
 
         return [
+            "dataRegional"          =>  $dataRegional,
             "dataMerk"              =>  $dataMerk,
             "dataBarangKategori"    =>  $dataBarangKategori,
+            "dataEkspedisi"         =>  $dataEkspedisi,
+            "dataKanalPembayaran"   =>  $dataKanalPembayaran,
+            "dataStatusTransaksi"   =>  $dataStatusTransaksi,
             "optionHours"	        =>  OPTION_HOURS,
             "optionMinutes"         =>  OPTION_MINUTES,
             "optionMinuteInterval"	=>  OPTION_MINUTEINTERVAL,

@@ -84,6 +84,14 @@ $routes->group('katalog', ['filter' => 'auth:allowNotLoggedIn'], function($route
     $routes->post('getDetailProduk', $functionRoute.'::getDetailProduk');
 });
 
+$routes->group('transaksi', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'Transaksi';
+    $routes->post('getDataTransaksi', $functionRoute.'::getDataTransaksi');
+    $routes->post('getDetailTransaksi', $functionRoute.'::getDetailTransaksi');
+    $routes->post('checkProdukOngkosKirim', $functionRoute.'::checkProdukOngkosKirim');
+    $routes->post('saveDataTransaksi', $functionRoute.'::saveDataTransaksi');
+});
+
 $routes->group('profile', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Profile';
     $routes->post('getDetailProfile', $functionRoute.'::getDetailProfile');

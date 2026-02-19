@@ -75,6 +75,15 @@ class AccessModel extends Model
         return true;
     }
 
+    public function getDataRegional()
+    {
+        $this->select('IDREGIONAL AS ID, NAMAREGIONAL AS VALUE');
+        $this->from('m_regional', true);
+        $this->orderBy('NAMAREGIONAL');
+
+        return $this->get()->getResultObject();
+    }
+
     public function getDataMerk()
     {
         $this->select('IDMERK AS ID, NAMAMERK AS VALUE');
@@ -89,6 +98,33 @@ class AccessModel extends Model
         $this->select('IDKATEGORIBARANG AS ID, KATEGORIBARANG AS VALUE');
         $this->from(APP_MAIN_DATABASE_NAME.'.m_barangkategori', true);
         $this->orderBy('KATEGORIBARANG');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataEkspedisi()
+    {
+        $this->select('IDEKSPEDISI AS ID, NAMAEKSPEDISI AS VALUE');
+        $this->from('m_ekspedisi', true);
+        $this->orderBy('NAMAEKSPEDISI');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataKanalPembayaran()
+    {
+        $this->select('IDKANALPEMBAYARAN AS ID, NAMAKANALPEMBAYARAN AS VALUE');
+        $this->from('m_kanalpembayaran', true);
+        $this->orderBy('NAMAKANALPEMBAYARAN');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataStatusTransaksi()
+    {
+        $this->select('IDSTATUSTRANSAKSI AS ID, NAMASTATUSTRANSAKSI AS VALUE');
+        $this->from('m_statustransaksi', true);
+        $this->orderBy('NAMASTATUSTRANSAKSI');
 
         return $this->get()->getResultObject();
     }
