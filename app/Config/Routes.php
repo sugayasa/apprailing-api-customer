@@ -65,6 +65,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
+    $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
 });
 

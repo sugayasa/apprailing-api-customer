@@ -98,6 +98,21 @@ class Assets extends ResourceController
             ->setBody($fileContent);
     }
 
+    public function customerMerk($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$namaFile;
+        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK  .'default.jpg';
+
+        $mimeType       =   mime_content_type($fullFilePath);
+        $fileContent    =   file_get_contents($fullFilePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+            ->setBody($fileContent);
+    }
+
     public function customerProduk($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_CUSTOMER_PRODUK.$namaFile;

@@ -120,22 +120,22 @@ class Katalog extends ResourceController
             $detailProduk['ARRIMAGE'] =   json_decode($detailProduk['ARRIMAGE'], true);
             $detailProduk['DATASTOK'] =   [
                 [
-                    "IDREGIONAL"    =>  hashidEncode(2),
+                    "IDREGIONAL"    =>  hashidEncode(101),
                     "NAMAREGIONAL"  =>  "Jakarta",
                     "TOTALSTOK"     =>  55
                 ],
                 [
-                    "IDREGIONAL"    =>  hashidEncode(1),
+                    "IDREGIONAL"    =>  hashidEncode(100),
                     "NAMAREGIONAL"  =>  "Surabaya",
                     "TOTALSTOK"     =>  213
                 ],
                 [
-                    "IDREGIONAL"    =>  hashidEncode(3),
+                    "IDREGIONAL"    =>  hashidEncode(102),
                     "NAMAREGIONAL"  =>  "Denpasar",
                     "TOTALSTOK"     =>  0
                 ],
                 [
-                    "IDREGIONAL"    =>  hashidEncode(6),
+                    "IDREGIONAL"    =>  hashidEncode(103),
                     "NAMAREGIONAL"  =>  "Semarang",
                     "TOTALSTOK"     =>  12
                 ]

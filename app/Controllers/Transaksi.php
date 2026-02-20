@@ -339,7 +339,7 @@ class Transaksi extends ResourceController
             'IDTRANSAKSIREKAP'  =>  $idPenjualanRekap,
             'IDSTATUSTRANSAKSI' =>  $idProduk,
             'INPUTUSER'         =>  $this->userData->nama." (Konsumen)",
-            'INPUTTANGGALWAKTU' =>  date('Y-m-d H:i:s')
+            'TANGGALWAKTU'      =>  date('Y-m-d H:i:s')
         ];
 
         $mainOperation->insertDataTable('t_transaksiriwayat', $arrInsertDataRiwayat);

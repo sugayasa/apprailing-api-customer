@@ -42,7 +42,7 @@ class TransaksiModel extends Model
     public function getDataTransaksi($idCustomer, $idStatusTransaksi, $idKategori, $searchKeyword)
     {	
         $this->select("A.IDTRANSAKSIREKAP, A.INPUTTANGGALWAKTU, C.STATUSTRANSAKSI, DATE_FORMAT(A.INPUTTANGGALWAKTU, '%d %b %Y %H:%i') AS INPUTTANGGALWAKTUSTR, B.NAMAREGIONAL,
-                    GROUP_CONCAT(D.IDPRODUK) AS ARRIDPRODUK, IF(A.TOTALBARANG > 3, A.TOTALBARANG - 3, 0) AS TOTALBARANGLAIN, A.NOMORTRANSAKSI, A.TOTALNOMINALBAYAR");
+                    GROUP_CONCAT(D.IDPRODUK) AS ARRIDPRODUK, IF(A.TOTALBARANG > 3, A.TOTALBARANG - 3, 0) AS TOTALBARANGLAIN, A.NOMORTRANSAKSI, A.TOTALNOMINALBAYAR", false);
         $this->from('t_transaksirekap AS A', true);
         $this->join('m_regional AS B', 'A.IDREGIONAL = B.IDREGIONAL', 'LEFT');
         $this->join('m_statustransaksi AS C', 'A.IDSTATUSTRANSAKSI = C.IDSTATUSTRANSAKSI', 'LEFT');
