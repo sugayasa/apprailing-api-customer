@@ -192,13 +192,13 @@ class Transaksi extends ResourceController
         $dataProdukHarga    =   [];
 
         foreach ($dataProduk as $produk) {
-            $idProduk  =   isset($produk['idProduk']) && $produk['idProduk'] != "" ? hashidDecode($produk['idProduk']) : 0;
+            $idProduk  =   isset($produk->idProduk) && $produk->idProduk != "" ? hashidDecode($produk->idProduk) : 0;
 
             if($idProduk == 0) return throwResponseNotAcceptable('Produk yang dipilih tidak valid, silakan periksa kembali');
             $detailProduk   =   (new TransaksiModel())->getDetailProdukById($idProduk);
             if(!$detailProduk) return throwResponseNotAcceptable('Produk yang dipilih tidak valid, silakan periksa kembali');
             $dataProdukHarga[]   =   [
-                "idProduk"  =>  $idProduk,
+                "idProduk"  =>  hashidEncode($idProduk),
                 "harga"     =>  $detailProduk['HARGAJUAL']
             ];
         }
