@@ -125,7 +125,7 @@ class Profile extends ResourceController
         $dataAlamat     =   $profileModel->getDataAlamat($idCustomer);
         
         if(!$dataAlamat) return throwResponseNotFound('Data Alamat Tidak Ditemukan');
-        $dataAlamat     =   encodeDatabaseObjectResultKey($dataAlamat, ['IDALAMAT']);
+        $dataAlamat     =   encodeDatabaseObjectResultKey($dataAlamat, ['IDCUSTOMERALAMAT']);
 
         return $this->setResponseFormat('json')->respond([
             "dataAlamat"    =>  $dataAlamat
