@@ -122,9 +122,9 @@ class AccessModel extends Model
 
     public function getDataStatusTransaksi()
     {
-        $this->select('IDSTATUSTRANSAKSI AS ID, NAMASTATUSTRANSAKSI AS VALUE');
+        $this->select('IDSTATUSTRANSAKSI AS ID, STATUSTRANSAKSI AS VALUE');
         $this->from('m_statustransaksi', true);
-        $this->orderBy('NAMASTATUSTRANSAKSI');
+        $this->orderBy('STATUSTRANSAKSI');
 
         return $this->get()->getResultObject();
     }
