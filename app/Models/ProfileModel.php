@@ -41,7 +41,7 @@ class ProfileModel extends Model
 
     public function getDataAlamat($idCustomer)
     {	
-        $this->select("IDALAMAT, NAMAALAMAT, NAMAPENERIMA, ALAMAT, KELURAHAN, KECAMATAN, KOTA, PROPINSI, NOMOR_TELEPON");
+        $this->select("IDCUSTOMERALAMAT, NAMAALAMAT, NAMAPENERIMA, NOMORHPPENERIMA, ALAMAT, KELURAHAN, KECAMATAN, KOTA, PROPINSI");
         $this->from('m_customeralamat', true);
         $this->where('IDCUSTOMER', $idCustomer);
 
