@@ -251,7 +251,7 @@ class Transaksi extends ResourceController
             ]
         ];
 
-        if(!$this->validate($rules, $messages)) return $this->validator->getErrors();
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
 
         $transaksiModel     =   new TransaksiModel();
         $mainOperation      =   new MainOperation();
@@ -270,8 +270,8 @@ class Transaksi extends ResourceController
         $totalNominalBarang =   0;
 
         foreach ($dataProduk as $produk) {
-            $idProduk  =   isset($produk['idProduk']) && $produk['idProduk'] != "" ? hashidDecode($produk['idProduk']) : 0;
-            $jumlah    =   isset($produk['jumlah']) && $produk['jumlah'] != "" ? $produk['jumlah'] : 0;
+            $idProduk  =   isset($produk->idProduk) && $produk->idProduk != "" ? hashidDecode($produk->idProduk) : 0;
+            $jumlah    =   isset($produk->jumlah) && $produk->jumlah != "" ? $produk->jumlah : 0;
 
             if($idProduk == 0 || $jumlah == 0) return throwResponseNotAcceptable('Produk yang dipilih tidak valid, silakan periksa kembali');
             $detailProduk   =   $transaksiModel->getDetailProdukById($idProduk);
@@ -312,12 +312,12 @@ class Transaksi extends ResourceController
 
         $procInsertTransaksiRekap   =   $mainOperation->insertDataTable('t_transaksirekap', $arrInsertDataRekap);
         if(!$procInsertTransaksiRekap['status']) return switchMySQLErrorCode($procInsertTransaksiRekap['errCode']);
-        $idPenjualanRekap   =   $procInsertTransaksiRekap['insertID'];
+        $idPenjualanRekap       =   $procInsertTransaksiRekap['insertID'];
 
         foreach ($dataProduk as $produk) {
-            $idProduk           =   isset($produk['idProduk']) && $produk['idProduk'] != "" ? hashidDecode($produk['idProduk']) : 0;
-            $jumlah             =   isset($produk['jumlah']) && $produk['jumlah'] != "" ? $produk['jumlah'] : 0;
-            $keterangan         =   isset($produk['keterangan']) && $produk['keterangan'] != "" ? $produk['keterangan'] : '';
+            $idProduk           =   isset($produk->idProduk) && $produk->idProduk != "" ? hashidDecode($produk->idProduk) : 0;
+            $jumlah             =   isset($produk->jumlah) && $produk->jumlah != "" ? $produk->jumlah : 0;
+            $keterangan         =   isset($produk->keterangan) && $produk->keterangan != "" ? $produk->keterangan : '';
             $detailProduk       =   $transaksiModel->getDetailProdukById($idProduk);
             $hargaProduk        =   $detailProduk['HARGAJUAL'];
             $totalNominalBarang =   $hargaProduk * $jumlah;
@@ -325,15 +325,24 @@ class Transaksi extends ResourceController
             $arrInsertDataBarang=   [
                 'IDTRANSAKSIREKAP'  =>  $idPenjualanRekap,
                 'IDPRODUK'          =>  $idProduk,
+                'KETERANGAN'        =>  $keterangan,
                 'JUMLAH'            =>  $jumlah,
-                'HARGA'             =>  $hargaProduk,
-                'TOTALNOMINAL'      =>  $totalNominalBarang,
-                'KETERANGAN'        =>  $keterangan
+                'NOMINALSATUAN'     =>  $hargaProduk,
+                'NOMINALTOTAL'      =>  $totalNominalBarang
             ];
 
             $procInsertTransaksiBarang    =   $mainOperation->insertDataTable('t_transaksibarang', $arrInsertDataBarang);
             if(!$procInsertTransaksiBarang['status']) return switchMySQLErrorCode($procInsertTransaksiBarang['errCode']);
         }
+
+        $arrInsertDataRiwayat   =   [
+            'IDTRANSAKSIREKAP'  =>  $idPenjualanRekap,
+            'IDSTATUSTRANSAKSI' =>  $idProduk,
+            'INPUTUSER'         =>  $this->userData->nama." (Konsumen)",
+            'INPUTTANGGALWAKTU' =>  date('Y-m-d H:i:s')
+        ];
+
+        $mainOperation->insertDataTable('t_transaksiriwayat', $arrInsertDataRiwayat);
 
         return throwResponseOK('Transaksi berhasil disimpan, silakan lanjutkan ke proses pembayaran', [
             "idTransaksiRekap"  =>  hashidEncode($idPenjualanRekap)

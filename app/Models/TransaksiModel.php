@@ -156,8 +156,8 @@ class TransaksiModel extends Model
 
     public function getDetailCustomerAlamatById($idCustomerAlamat)
     {	
-        $this->select("NAMAALAMAT, CONCAT(ALAMAT, ' ', KELURAHAN, ' ', KECAMATAN, ' ', KOTA, ' ', PROVINSI) AS ALAMATKIRIM, NAMAPENERIMA, NOMORHPPENERIMA");
-        $this->from('t_alamatpengiriman', true);
+        $this->select("NAMAALAMAT, CONCAT(ALAMAT, ' ', KELURAHAN, ' ', KECAMATAN, ' ', KOTA, ' ', PROPINSI) AS ALAMATKIRIM, NAMAPENERIMA, NOMORHPPENERIMA");
+        $this->from('m_customeralamat', true);
         $this->where('IDCUSTOMERALAMAT', $idCustomerAlamat);
         $this->limit(1);
 
