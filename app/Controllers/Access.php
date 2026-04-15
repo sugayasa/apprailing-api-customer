@@ -354,7 +354,7 @@ class Access extends ResourceController
         ];
 
         $messages   =   [
-            'email' =>  [
+            'email'     =>  [
                 'valid_email'   =>  'Format email tidak valid'
             ],
             'phoneNumber'   =>  [
@@ -385,9 +385,9 @@ class Access extends ResourceController
  
         $idCustomer             =   $dataCustomer['IDCUSTOMER'];
         $nama                   =   $dataCustomer['NAMA'];
-        $email                  =   $dataCustomer['EMAIL'];
-        $phoneNumber            =   $dataCustomer['NOMORHP'];
-        $emailPhoneNumberType   =   is_null(issetNotNullAndNotEmptyString($email)) ? 'PN' : 'EM';
+        $emailDB                =   $dataCustomer['EMAIL'];
+        $phoneNumberDB          =   $dataCustomer['NOMORHP'];
+        $emailPhoneNumberType   =   issetNotNullAndNotEmptyString($email, false) ? 'EM' : 'PN';
         $emailPhoneNumberTypeStr=   $emailPhoneNumberType == 'PN' ? 'whatsapp' : 'email';
         $emailPhoneNumberStr    =   $emailPhoneNumberType == 'PN' ? $phoneNumber : $email;
         $messageSuccess         =   'Halo '.$nama.', silakan lanjutkan dengan memasukkan kode OTP yang telah dikirimkan melalui pesan '.$emailPhoneNumberTypeStr.'.'; 
@@ -406,8 +406,8 @@ class Access extends ResourceController
             "idCustomer"    =>  $idCustomer,
             "idSession"     =>  0,
             "nama"          =>  $nama,
-            "email"         =>  $email,
-            "nomorHP"       =>  $phoneNumber,
+            "email"         =>  $emailDB,
+            "nomorHP"       =>  $phoneNumberDB,
             "otpCode"       =>  $otpCode,
             "otpCodeExpired"=>  strtotime($this->currentDateTime) + (APP_OTP_EXPIRED_MINUTES*60)
         );
