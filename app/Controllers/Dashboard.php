@@ -7,7 +7,6 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use App\Models\MainOperation;
 use App\Models\DashboardModel;
 
 class Dashboard extends ResourceController
@@ -36,6 +35,7 @@ class Dashboard extends ResourceController
 
     public function getDataDashboard()
     {
+        $dashboardModel =   new DashboardModel();
         $profileData    =   [
             "avatar"    =>  $this->userData->avatar,
             "nama"      =>  $this->userData->nama,
@@ -43,53 +43,50 @@ class Dashboard extends ResourceController
             "propinsi"  =>  $this->userData->propinsi
         ];
 
-        $slideBanner    =   [
-            [
-                "idSlideBanner" =>  hashidEncode(1),
-                "urlImage"      =>  BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER.'slide-banner-1.jpg'
-            ],
-            [
-                "idSlideBanner" =>  hashidEncode(2),
-                "urlImage"      =>  BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER.'slide-banner-2.jpg'
-            ],
-            [
-                "idSlideBanner" =>  hashidEncode(3),
-                "urlImage"      =>  BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER.'slide-banner-3.jpg'
-            ]
-        ];
+        $dataSlideBanner=   $dashboardModel->getDataSlideBanner();
+        $slideBanner    =   [];
+        foreach ($dataSlideBanner as $keySlide) {
+            $slideBanner[] = [
+                "idSlideBanner" =>  hashidEncode($keySlide->IDSLIDEBANNER),
+                "urlImage"      =>  BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER.$keySlide->IMAGE,
+                "urlDetail"     =>  BASE_URL_DETAIL_SLIDE_ARTICLE.hashidEncode($keySlide->IDSLIDEBANNER, true)
+            ];
+        }
 
-        $dataMerk       =   [
-            [
-                "idMerk"    =>  hashidEncode(1),
-                "namaMerk"  =>  "Rich Railing",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'richrailing.png'
-            ],
-            [
-                "idMerk"    =>  hashidEncode(2),
-                "namaMerk"  =>  "Railingku",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'railingku.png'
-            ],
-            [
-                "idMerk"    =>  hashidEncode(3),
-                "namaMerk"  =>  "Weezy",
-                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.'weezy.png'
-            ]
-        ];
+        $dataMerkDB =   $dashboardModel->getDataMerk();
+        $dataMerk   =   [];
+        foreach ($dataMerkDB as $keyMerk) {
+            $dataMerk[] = [
+                "idMerk"    =>  hashidEncode($keyMerk->IDMERK),
+                "namaMerk"  =>  $keyMerk->NAMAMERK,
+                "logoMerk"  =>  BASE_URL_ASSETS_CUSTOMER_MERK.$keyMerk->LOGO
+            ];
+        }
 
-        $dataOrder      =   [
-            [
-                "idOrder"       =>  hashidEncode(1),
-                "statusOrder"   =>  "Order Selesai",
-                "tanggalWaktu"  =>  "23 Desember 2025 10:00",
-                "fotoBarang"    =>  [
-                    BASE_URL_ASSETS_PHOTO_BARANG.'railing-balkon-minimalis.jpg',
-                    BASE_URL_ASSETS_PHOTO_BARANG.'railing-balkon-minimalis.jpg'
-                ],
-                "jumlahBarang"  =>  4,
-                "kodeOrder"     =>  "#ORD-0010007",
-                "totalNominal"  =>  "4.300.000"
-            ]
-        ];
+        $dataOrderDB=   $dashboardModel->getDataOrderTerakhir($this->userData->idCustomer);
+        $dataOrder  =   [];
+        foreach ($dataOrderDB as $keyOrder) {
+            $idTransaksiRekap   =   $keyOrder->IDTRANSAKSIREKAP;
+            $dataBarangOrder    =   $dashboardModel->getDataBarangOrder($idTransaksiRekap);
+            $arrFotoBarang      =   [];
+            foreach ($dataBarangOrder as $keyBarangOrder) {
+                $arrImage       =   $keyBarangOrder->ARRIMAGE;
+                $arrImageDecoded=   json_decode($arrImage, true);
+                if ($arrImageDecoded && isset($arrImageDecoded[0])) {
+                    $arrFotoBarang[]=   BASE_URL_ASSETS_PHOTO_BARANG.$arrImageDecoded[0];
+                }
+            }
+
+            $dataOrder[]        =   [
+                "idOrder"       =>  hashidEncode($idTransaksiRekap),
+                "statusOrder"   =>  $keyOrder->STATUSTRANSAKSI,
+                "tanggalWaktu"  =>  $keyOrder->TANGGALORDER,
+                "fotoBarang"    =>  $arrFotoBarang,
+                "jumlahBarang"  =>  $keyOrder->TOTALBARANG,
+                "kodeOrder"     =>  $keyOrder->NOMORTRANSAKSI,
+                "totalNominal"  =>  $keyOrder->TOTALNOMINALBAYAR
+            ];
+        }
 
         return $this
                 ->setResponseFormat('json')
@@ -99,5 +96,17 @@ class Dashboard extends ResourceController
                     "dataMerk"      =>  $dataMerk,
                     "dataOrder"     =>  $dataOrder
                 ]);
+    }
+
+    public function getDetailSlideBanner($idSlideBanner)
+    {
+        $dashboardModel     =   new DashboardModel();
+        $idSlideBanner      =   hashidDecode($idSlideBanner, true);
+        $detailSlideBanner  =   $dashboardModel->getDetailSlideBanner($idSlideBanner);
+        
+        if(is_null($detailSlideBanner)) return view('errors/cli/artikel_tidak_ditemukan');
+        return view('detail_artikel', [
+            'konten' => $detailSlideBanner['KONTEN']
+        ]);
     }
 }

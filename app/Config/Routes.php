@@ -73,6 +73,7 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
     $functionRoute =   'Dashboard';
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
 });
+$routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
 
 $routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Feed';

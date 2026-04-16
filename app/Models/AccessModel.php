@@ -87,7 +87,7 @@ class AccessModel extends Model
     public function getDataMerk()
     {
         $this->select('IDMERK AS ID, NAMAMERK AS VALUE');
-        $this->from(APP_MAIN_DATABASE_NAME.'.m_merk', true);
+        $this->from('m_merk', true);
         $this->orderBy('NAMAMERK');
 
         return $this->get()->getResultObject();

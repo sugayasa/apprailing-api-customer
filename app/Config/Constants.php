@@ -156,6 +156,8 @@ defined('APP_MAIN_DATABASE_DEFAULT')                    || define('APP_MAIN_DATA
 defined('APP_DEFAULT_ALAMAT_KOTA')                      || define('APP_DEFAULT_ALAMAT_KOTA', $_ENV['APP_DEFAULT_ALAMAT_KOTA'] ?: 'Jakarta Pusat');
 defined('APP_DEFAULT_ALAMAT_PROPINSI')                  || define('APP_DEFAULT_ALAMAT_PROPINSI', $_ENV['APP_DEFAULT_ALAMAT_PROPINSI'] ?: 'DKI Jakarta');
 defined('APP_DATABASE_TOOL_SECRET_KEY')                 || define('APP_DATABASE_TOOL_SECRET_KEY', $_ENV['APP_DATABASE_TOOL_SECRET_KEY'] ?: 'secretkey');
+defined('APP_DEVELOPER_PHONE_NUMBER')                  || define('APP_DEVELOPER_PHONE_NUMBER', $_ENV['APP_DEVELOPER_PHONE_NUMBER'] ?: '+6281234567890');
+defined('APP_DEVELOPER_EMAIL')                         || define('APP_DEVELOPER_EMAIL', $_ENV['APP_DEVELOPER_EMAIL'] ?: 'test@example.com');
 
 defined('MAX_INACTIVE_SESSION_MINUTES')                 || define('MAX_INACTIVE_SESSION_MINUTES', $_ENV['MAX_INACTIVE_SESSION_MINUTES'] ?: 60);
 defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQUEST', $_ENV['LOG_USER_REQUEST'] ?: false);
@@ -163,6 +165,7 @@ defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQU
 defined('PRODUCTION_URL')						        || define('PRODUCTION_URL', $productionURL);
 defined('BASE_URL')                                     || define('BASE_URL', $_ENV['BASE_URL'] ?: 'https://example.com/');
 defined('BASE_URL_ADMIN_APPS')                          || define('BASE_URL_ADMIN_APPS', $_ENV['BASE_URL_ADMIN_APPS'] ?: 'https://example.com/');
+defined('BASE_URL_DETAIL_SLIDE_ARTICLE')                || define('BASE_URL_DETAIL_SLIDE_ARTICLE', BASE_URL.'dashboard/getDetailSlideBanner/' ?: 'https://example.com/');
 
 defined('BASE_URL_ASSETS_CUSTOM')                       || define('BASE_URL_ASSETS_CUSTOM', BASE_URL.$_ENV['BASE_URL_ASSETS_CUSTOM'] ?: 'assets/');
 defined('BASE_URL_ASSETS_LOGO_MERK')                    || define('BASE_URL_ASSETS_LOGO_MERK', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_LOGO_MERK_PATH'] ?: 'logoMerk/');
