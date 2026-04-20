@@ -143,14 +143,14 @@ class Profile extends ResourceController
                 foreach ($dataAlamat as $keyAlamat) {
                     if($keyAlamat['ISALAMATUTAMA'] == 1){
                         $informasiAlamat    =   [
-                            "namaAlamat"        =>  $keyAlamat['NAMAALAMAT'] ?? "Alamat Utama",
-                            "namaPenerima"      =>  $keyAlamat['NAMAPENERIMA'] ?? "-",
-                            "alamatDetail"      =>  $keyAlamat['ALAMAT'] ?? "-",
-                            "kelurahan"         =>  $keyAlamat['KELURAHAN'] ?? "-",
-                            "kecamatan"         =>  $keyAlamat['KECAMATAN'] ?? "-",
-                            "kotaKabupaten"     =>  $keyAlamat['KOTA'] ?? "-",
-                            "propinsi"          =>  $keyAlamat['PROPINSI'] ?? "-",
-                            "nomorTelepon"      =>  $keyAlamat['NOMORHPPENERIMA'] ?? "-",
+                            "namaAlamat"        =>  $keyAlamat->NAMAALAMAT ?? "Alamat Utama",
+                            "namaPenerima"      =>  $keyAlamat->NAMAPENERIMA ?? "-",
+                            "alamatDetail"      =>  $keyAlamat->ALAMAT ?? "-",
+                            "kelurahan"         =>  $keyAlamat->KELURAHAN ?? "-",
+                            "kecamatan"         =>  $keyAlamat->KECAMATAN ?? "-",
+                            "kotaKabupaten"     =>  $keyAlamat->KOTA ?? "-",
+                            "propinsi"          =>  $keyAlamat->PROPINSI ?? "-",
+                            "nomorTelepon"      =>  $keyAlamat->NOMORHPPENERIMA ?? "-",
                             "totalAlamatLain"   =>  $totalAlamatLain
                         ];
                     }
