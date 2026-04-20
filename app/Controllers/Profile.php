@@ -75,34 +75,87 @@ class Profile extends ResourceController
         ];
 
         if($isRegistered){
+            $profileModel   =   new ProfileModel();
+            $profileData    =   $profileModel->getDetailProfile($idCustomer);
             $royaltiLevel   =   [
-                "royaltiTier"       =>  "Bronze Customer",
-                "royaltiDeskripsi"  =>  "Anda baru terdaftar sebagai customer kami"
+                "royaltiTier"       =>  $profileData['ROYALTITIER'] ?? "-",
+                "royaltiDeskripsi"  =>  $profileData['ROYALTIDESKRIPSI'] ?? "Anda baru terdaftar sebagai customer kami"
             ];
 
-            $statistikTransaksi   =   [
-                "totalTransaksiSelesai" =>  3,
-                "totalItemBarang"       =>  "5+",
-                "totalNominalBeli"      =>  "1 Jt+"
+            $strTotalItemBarang     =   '0';
+            $strTotalNominalBeli    =   '-';
+            $totaItemBarangDB       =   $profileData['TOTALITEMBARANG'] ?? 0;
+            $minimalNomimalBeliDB   =   $profileData['MINIMALNOMINALPEMBELIAN'] ?? 0;
+
+            switch (true) {
+                case ($totaItemBarangDB > 1000) :   $strTotalItemBarang =   '1K+'; break;
+                case ($totaItemBarangDB > 500)  :   $strTotalItemBarang =   '500+'; break;
+                case ($totaItemBarangDB > 200)  :   $strTotalItemBarang =   '200+'; break;
+                case ($totaItemBarangDB > 100)  :   $strTotalItemBarang =   '100+'; break;
+                case ($totaItemBarangDB > 50)   :   $strTotalItemBarang =   '50+'; break;
+                case ($totaItemBarangDB > 20)   :   $strTotalItemBarang =   '20+'; break;
+                case ($totaItemBarangDB > 5)    :   $strTotalItemBarang =   '5+'; break;
+                default                         :   $strTotalItemBarang =   $totaItemBarangDB;
+            }
+
+            if(!is_null($profileData['MINIMALNOMINALPEMBELIAN']) && $profileData['MINIMALNOMINALPEMBELIAN'] > 0) {
+                switch (true) {
+                    case ($minimalNomimalBeliDB > 500000000):   $strTotalNominalBeli =   '500Jt+'; break;
+                    case ($minimalNomimalBeliDB > 200000000):   $strTotalNominalBeli =   '200Jt+'; break;
+                    case ($minimalNomimalBeliDB > 100000000):   $strTotalNominalBeli =   '100Jt+'; break;
+                    case ($minimalNomimalBeliDB > 50000000) :   $strTotalNominalBeli =   '50Jt+'; break;
+                    case ($minimalNomimalBeliDB > 20000000) :   $strTotalNominalBeli =   '20Jt+'; break;
+                    case ($minimalNomimalBeliDB > 10000000) :   $strTotalNominalBeli =   '10Jt+'; break;
+                    case ($minimalNomimalBeliDB > 5000000)  :   $strTotalNominalBeli =   '5Jt+'; break;
+                    case ($minimalNomimalBeliDB > 2000000)  :   $strTotalNominalBeli =   '2Jt+'; break;
+                    case ($minimalNomimalBeliDB > 1000000)  :   $strTotalNominalBeli =   '1Jt+'; break;
+                    default                                 :   $strTotalNominalBeli =   '~1Jt';
+                }
+            }
+
+            $statistikTransaksi     =   [
+                "totalTransaksiSelesai" =>  $profileData['JUMLAHTRANSAKSI'] ?? 0,
+                "totalItemBarang"       =>  $strTotalItemBarang,
+                "totalNominalBeli"      =>  $strTotalNominalBeli
             ];
 
             $informasiPribadi   =   [
-                "namaCustomer"  =>  "Agus Adiyasa",
-                "email"         =>  "agus.adiyasa@gmail.com",
-                "nomorTelepon"  =>  "+628970444360"
+                "namaCustomer"  =>  $this->userData->nama,
+                "email"         =>  $this->userData->email,
+                "nomorTelepon"  =>  $this->userData->nomorHP
             ];
 
+            $dataAlamat         =   $profileModel->getDataAlamat($idCustomer);
             $informasiAlamat    =   [
-                "namaAlamat"        =>  "Alamat Utama",
-                "namaPenerima"      =>  "Agus Adiyasa",
-                "alamatDetail"      =>  "Jalan Aluminium 21A RT 5 RW 9",
-                "kelurahan"         =>  "Purwantoro",
-                "kecamatan"         =>  "Blimbing",
-                "kotaKabupaten"     =>  "Kota Malang",
-                "propinsi"          =>  "Jawa Timur",
-                "nomorTelepon"      =>  "+628970444360",
-                "totalAlamatLain"   =>  1
+                "namaAlamat"        =>  "-",
+                "namaPenerima"      =>  "-",
+                "alamatDetail"      =>  "-",
+                "kelurahan"         =>  "-",
+                "kecamatan"         =>  "-",
+                "kotaKabupaten"     =>  "-",
+                "propinsi"          =>  "-",
+                "nomorTelepon"      =>  "-",
+                "totalAlamatLain"   =>  0
             ];
+
+            if($dataAlamat){
+                $totalAlamatLain    =   count($dataAlamat) - 1;
+                foreach ($dataAlamat as $keyAlamat) {
+                    if($keyAlamat['ISALAMATUTAMA'] == 1){
+                        $informasiAlamat    =   [
+                            "namaAlamat"        =>  $keyAlamat['NAMAALAMAT'] ?? "Alamat Utama",
+                            "namaPenerima"      =>  $keyAlamat['NAMAPENERIMA'] ?? "-",
+                            "alamatDetail"      =>  $keyAlamat['ALAMAT'] ?? "-",
+                            "kelurahan"         =>  $keyAlamat['KELURAHAN'] ?? "-",
+                            "kecamatan"         =>  $keyAlamat['KECAMATAN'] ?? "-",
+                            "kotaKabupaten"     =>  $keyAlamat['KOTA'] ?? "-",
+                            "propinsi"          =>  $keyAlamat['PROPINSI'] ?? "-",
+                            "nomorTelepon"      =>  $keyAlamat['NOMORHPPENERIMA'] ?? "-",
+                            "totalAlamatLain"   =>  $totalAlamatLain
+                        ];
+                    }
+                }
+            }
         }
 
         return $this->setResponseFormat('json')->respond([
