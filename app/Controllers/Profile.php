@@ -141,7 +141,7 @@ class Profile extends ResourceController
             if($dataAlamat){
                 $totalAlamatLain    =   count($dataAlamat) - 1;
                 foreach ($dataAlamat as $keyAlamat) {
-                    if($keyAlamat['ISALAMATUTAMA'] == 1){
+                    if($keyAlamat->ISALAMATUTAMA == 1){
                         $informasiAlamat    =   [
                             "namaAlamat"        =>  $keyAlamat->NAMAALAMAT ?? "Alamat Utama",
                             "namaPenerima"      =>  $keyAlamat->NAMAPENERIMA ?? "-",
