@@ -59,7 +59,7 @@ class AccessModel extends Model
         $this->from('m_customer AS A', true);
         $this->join('m_customeralamat AS B', 'A.IDCUSTOMER = B.IDCUSTOMER AND B.ISALAMATUTAMA = 1', 'LEFT');
         $this->where('A.IDCUSTOMER', $idCustomer);
-        $this->groupBy('A.IDCUSTOMER');
+        $this->limit(1);
 
         return $this->get()->getRowArray();
     }
@@ -95,9 +95,9 @@ class AccessModel extends Model
 
     public function getDataBarangKategori()
     {
-        $this->select('IDKATEGORIBARANG AS ID, KATEGORIBARANG AS VALUE');
-        $this->from(APP_MAIN_DATABASE_NAME.'.m_barangkategori', true);
-        $this->orderBy('KATEGORIBARANG');
+        $this->select('IDKATEGORI AS ID, NAMAKATEGORI AS VALUE');
+        $this->from('m_kategori', true);
+        $this->orderBy('NAMAKATEGORI');
 
         return $this->get()->getResultObject();
     }
@@ -134,5 +134,15 @@ class AccessModel extends Model
         $this->set('DATETIMEACTIVITY', $datetimeActivity);
         $this->where('IDUSERADMIN', $idUserAdmin);
         $this->update();
+    }
+
+    public function getDataSlideBoarding()
+    {
+        $this->select('KONTEN, CONCAT("'.BASE_URL_ASSETS_CUSTOMER_SLIDE_BOARDING.'", IMAGE) AS IMAGE');
+        $this->from('t_slideboarding', true);
+        $this->where('STATUS', 1);
+        $this->orderBy('URUTAN');
+
+        return $this->get()->getResultObject();
     }
 }

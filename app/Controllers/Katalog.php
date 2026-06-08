@@ -37,15 +37,19 @@ class Katalog extends ResourceController
     public function getDataProduk()
     {
         $rules      =   [
-            'searchKeyword' =>  ['label' => 'Kata Kunci Pencarian', 'rules' => 'permit_empty|alpha_numeric_punct'],
-            'idMerk'        =>  ['label' => 'Id Merk', 'rules' => 'permit_empty|alpha_numeric'],
-            'page'          =>  ['label' => 'Page', 'rules' => 'required|numeric'],
-            'dataPerPage'   =>  ['label' => 'Data Per Page', 'rules' => 'required|numeric']
+            'searchKeyword'         =>  ['label' => 'Kata Kunci Pencarian', 'rules' => 'permit_empty|alpha_numeric_punct'],
+            'idMerk'                =>  ['label' => 'Id Merk', 'rules' => 'permit_empty|alpha_numeric'],
+            'arrIdBarangKategori'   =>  ['label' => 'Id Kategori', 'rules' => 'permit_empty|is_array'],
+            'page'                  =>  ['label' => 'Page', 'rules' => 'required|numeric'],
+            'dataPerPage'           =>  ['label' => 'Data Per Page', 'rules' => 'required|numeric']
         ];
 
         $messages   =   [
             'idMerk'    => [
-                'alpha_numeric' => 'Merk yang dipilih tidak valid, silakan coba lagi nanti'
+                'alpha_numeric' =>  'Merk yang dipilih tidak valid, silakan coba lagi nanti'
+            ],
+            'arrIdBarangKategori'   => [
+                'is_array'      => 'Kategori yang dipilih tidak valid, silakan coba lagi nanti'
             ],
             'page'      => [
                 'required'=> 'Invalid data sent - Page is required',
@@ -58,17 +62,33 @@ class Katalog extends ResourceController
         ];
 
         if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        $arrIdBarangKategori=   $this->request->getVar('arrIdBarangKategori');
 
-        $katalogModel   =   new KatalogModel();
-        $mainOperation  =   new MainOperation();
-        $searchKeyword  =   $this->request->getVar('searchKeyword');
-        $idMerk         =   $this->request->getVar('idMerk');
-        $idMerk         =   isset($idMerk) && $idMerk != "" ? hashidDecode($idMerk) : 0;
-        $page           =   $this->request->getVar('page');
-        $dataPerPage    =   $this->request->getVar('dataPerPage');
-        $baseData       =	$katalogModel->getDataProduk($idMerk, $searchKeyword);
-        $totalNumberData=   $baseData->countAllResults(false);
-        $pageProperty   =   $mainOperation->generatePageProperty($page, $dataPerPage, $totalNumberData);
+        if(isset($arrIdBarangKategori) && is_array($arrIdBarangKategori) && count($arrIdBarangKategori) > 0){
+            $rulesKategori      =   [
+                'arrIdBarangKategori.*' =>  ['label' => 'Id Kategori Item', 'rules' => 'alpha_numeric']
+            ];
+
+            $messagesKategori   =   [
+                'arrIdBarangKategori'   => [
+                    'is_array'      => 'Kategori yang dipilih tidak valid, silakan coba lagi nanti'
+                ]
+            ];
+
+            if(!$this->validate($rulesKategori, $messagesKategori)) return $this->fail($this->validator->getErrors());
+        }
+
+        $katalogModel       =   new KatalogModel();
+        $mainOperation      =   new MainOperation();
+        $searchKeyword      =   $this->request->getVar('searchKeyword');
+        $idMerk             =   $this->request->getVar('idMerk');
+        $idMerk             =   isset($idMerk) && $idMerk != "" ? hashidDecode($idMerk) : 0;
+        $arrIdBarangKategori=   isset($arrIdBarangKategori) && $arrIdBarangKategori != "" ? hashidDecodeArray($arrIdBarangKategori) : [];
+        $page               =   $this->request->getVar('page');
+        $dataPerPage        =   $this->request->getVar('dataPerPage');
+        $baseData           =	$katalogModel->getDataProduk($idMerk, $arrIdBarangKategori, $searchKeyword);
+        $totalNumberData    =   $baseData->countAllResults(false);
+        $pageProperty       =   $mainOperation->generatePageProperty($page, $dataPerPage, $totalNumberData);
 
         if($totalNumberData > 0){
             $dataProduk   =   $baseData->orderBy('NAMAPRODUK')->asObject()->findAll($dataPerPage, ($page - 1) * $dataPerPage);
@@ -90,7 +110,8 @@ class Katalog extends ResourceController
         } else {
             $dataReturn =   [
                 "dataProduk"    =>  [],
-                "pageProperty"  =>  $pageProperty
+                "pageProperty"  =>  $pageProperty,
+                "arrIdBarangKategori"  =>  $arrIdBarangKategori
             ];
             return throwResponseNotFound('Tidak ada data yang ditemukan', $dataReturn);
         }
@@ -117,29 +138,21 @@ class Katalog extends ResourceController
         $detailProduk   =	$katalogModel->getDetailProduk($idProduk);
 
         if($detailProduk){
-            $detailProduk['ARRIMAGE'] =   json_decode($detailProduk['ARRIMAGE'], true);
-            $detailProduk['DATASTOK'] =   [
-                [
-                    "IDREGIONAL"    =>  hashidEncode(101),
-                    "NAMAREGIONAL"  =>  "Jakarta",
-                    "TOTALSTOK"     =>  55
-                ],
-                [
-                    "IDREGIONAL"    =>  hashidEncode(100),
-                    "NAMAREGIONAL"  =>  "Surabaya",
-                    "TOTALSTOK"     =>  213
-                ],
-                [
-                    "IDREGIONAL"    =>  hashidEncode(102),
-                    "NAMAREGIONAL"  =>  "Denpasar",
-                    "TOTALSTOK"     =>  0
-                ],
-                [
-                    "IDREGIONAL"    =>  hashidEncode(103),
-                    "NAMAREGIONAL"  =>  "Semarang",
-                    "TOTALSTOK"     =>  12
-                ]
-            ];
+            $mainOperation              =   new MainOperation();
+            $idBarang                   =   $detailProduk['IDBARANG'];
+            $detailProduk['ARRIMAGE']   =   json_decode($detailProduk['ARRIMAGE'], true);
+            $detailProduk['DATASTOK']   =   [];
+            $dataRegional               =   $mainOperation->getDataRegional();
+
+            foreach ($dataRegional as $keyRegional) {
+                $detailProduk['DATASTOK'][] =   [
+                    "IDREGIONAL"    =>  hashidEncode($keyRegional->IDREGIONAL),
+                    "NAMAREGIONAL"  =>  $keyRegional->NAMAREGIONAL,
+                    "TOTALSTOK"     =>  $katalogModel->getTotalStokProdukByRegional($keyRegional->NAMADATABASE, $idBarang)
+                ];
+            }
+
+            unset($detailProduk['IDBARANG']);
             return $this->setResponseFormat('json')->respond([
                 "detailProduk"  =>  $detailProduk,
                 "urlImageProduk"=>  BASE_URL_ASSETS_CUSTOMER_PRODUK

@@ -64,6 +64,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('logoMarketplace/(:any)', 'Assets::logoMarketplace/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
+    $routes->get('customerSlideBoarding/(:any)', 'Assets::customerSlideBoarding/$1');
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
@@ -78,6 +79,8 @@ $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlide
 $routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Feed';
     $routes->post('getDataFeed', $functionRoute.'::getDataFeed');
+    $routes->post('setSukaFeed', $functionRoute.'::setSukaFeed');
+    $routes->post('setBookmarkFeed', $functionRoute.'::setBookmarkFeed');
 });
 
 $routes->group('katalog', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {

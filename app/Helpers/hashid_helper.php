@@ -31,6 +31,28 @@ if(!function_exists('hashidDecode')){
     }
 }
 
+if(!function_exists('hashidDecodeArray')){
+    function hashidDecodeArray($arrIdPayload, $keyDefault = false){
+        $hashKey        =   getHashKey($keyDefault);
+        $hashids        =   new Hashids($hashKey);
+        $arrIdDecoded   =   [];
+
+        try {
+            if(is_array($arrIdPayload) && count($arrIdPayload) > 0){
+                foreach($arrIdPayload as $idPayload){
+                    $decodeResult   =   $hashids->decode($idPayload);
+                    $idDecodeResult =   is_array($decodeResult) ? $decodeResult[0] : $decodeResult;
+                    if($idDecodeResult !== false) array_push($arrIdDecoded, $idDecodeResult);
+                }
+            }
+
+            return $arrIdDecoded;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+}
+
 if(!function_exists('getHashKey')){
     function getHashKey($keyDefault){
         $request        =   \Config\Services::request();

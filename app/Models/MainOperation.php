@@ -211,6 +211,17 @@ class MainOperation extends Model
         return $result['DATASETTING'];
     }
 
+    public function getDataRegional()
+    {	
+        $this->select("IDREGIONAL, NAMAREGIONAL, NAMADATABASE");
+        $this->from('m_regional', true);
+        $this->orderBy('IDREGIONAL', 'ASC');
+
+        $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+
     public function getDataDetailRegional()
     {	
         $this->select("IDKOTA, NAMAKOTA, INISIALKOTA, NAMADATABASE, CLASSWARNA");

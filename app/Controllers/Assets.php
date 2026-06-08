@@ -25,106 +25,88 @@ class Assets extends ResourceController
         return $this->failForbidden('[E-AUTH-000] Forbidden Access');
     }
 
-    public function logoMerk($namaFile)
+    public function logoMerk($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MERK.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MERK  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MERK.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_LOGO_MERK  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function logoMarketplace($namaFile)
+    public function logoMarketplace($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MARKETPLACE.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MARKETPLACE  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MARKETPLACE.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_LOGO_MARKETPLACE  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function photoBarang($namaFile)
+    public function photoBarang($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG  .'noimage.jpg';
+        $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_BARANG  .'noimage.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function customerAvatar($namaFile)
+    public function customerAvatar($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_AVATAR  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function customerSlideBanner($namaFile)
+    public function customerSlideBoarding($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BANNER.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BANNER  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BOARDING.$nameFile;
+        $isDefault      =   strpos($nameFile, 'defaultBoarding') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_SLIDE_BOARDING  .'defaultBoarding.png';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function customerMerk($namaFile)
+    public function customerSlideBanner($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_SLIDE_BANNER.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_SLIDE_BANNER  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
-    public function customerProduk($namaFile)
+    public function customerMerk($nameFile)
     {
-        $fullFilePath   =   PATH_STORAGE_CUSTOMER_PRODUK.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_CUSTOMER_PRODUK  .'default.jpg';
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_MERK  .'default.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function customerProduk($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_PRODUK.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_PRODUK  .'default.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    private function setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath)
+    {
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isDefault !== false) $fullFilePath   =   $defaultFilePath;
 
         $mimeType       =   mime_content_type($fullFilePath);
         $fileContent    =   file_get_contents($fullFilePath);
 
         return $this->response
             ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+            ->setHeader('Content-Disposition', 'inline; filename="' . $nameFile . '"')
             ->setBody($fileContent);
     }
 }

@@ -66,13 +66,13 @@ class Access extends ResourceController
         $timeCreate         =   Time::now(APP_TIMEZONE)->toDateTimeString();
         $statusCode         =   401;
         $responseMsg        =   'Harap masuk/daftar menggunakan nomor telepon atau email untuk melanjutkan';
-        $captchaCode        =   generateRandomCharacter(4, 3);
+        $captchaCode        =   APP_IS_PRODUCTION ? generateRandomCharacter(4, 3) : 'AAAA';
 
         $userData   =   array(
             "avatar"    =>  BASE_URL_ASSETS_CUSTOMER_AVATAR."default.jpg",
             "nama"      =>  "Guest",
             "email"     =>  "-",
-            "   "   =>  "-",
+            "nomorHP"   =>  "-",
             "kota"      =>  APP_DEFAULT_ALAMAT_KOTA,
             "propinsi"  =>  APP_DEFAULT_ALAMAT_PROPINSI
         );
@@ -186,6 +186,7 @@ class Access extends ResourceController
         return $this->setResponseFormat('json')
                     ->respond([
                         'token'         =>  $newToken,
+                        'slideBoarding' =>  !isset($token) || $token == "" ? $this->getSlideBoarding() : [],
                         'userData'      =>  $userData,
                         'optionHelper'  =>  $optionHelper,
                         'messages'      =>  [
@@ -194,6 +195,14 @@ class Access extends ResourceController
                     ])
                     ->setStatusCode($statusCode);
 
+    }
+
+    private function getSlideBoarding()
+    {
+        $accessModel        =   new AccessModel();
+        $dataSlideBoarding  =   $accessModel->getDataSlideBoarding();
+
+        return $dataSlideBoarding;
     }
 
     public function registerSubmitData()
@@ -246,6 +255,7 @@ class Access extends ResourceController
 
         $messageSuccess =   'Halo '.$nama.', silakan lanjutkan dengan memasukkan kode OTP yang telah dikirimkan melalui pesan '.$emailPhoneNumberTypeStr.'.'; 
         $otpCode        =   is_null($otpCode) && $otpCode != '' ? $otpCode : generateRandomCharacter(6, 1);
+        $otpCode        =   APP_IS_PRODUCTION ? $otpCode : 123456;
 
         switch($emailPhoneNumberType){
             case 'EM':
@@ -306,7 +316,7 @@ class Access extends ResourceController
                     );
         }
         
-        if($otpCodeParam != $otpCodeToken) return $this->fail('Kode captcha yang Anda masukkan tidak cocok');
+        if($otpCodeParam != $otpCodeToken) return $this->fail('Kode OTP yang Anda masukkan tidak cocok');
         
         $mainOperation      =   new MainOperation();
         $nama               =   $this->userData->nama;
@@ -437,6 +447,9 @@ class Access extends ResourceController
         if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
 
         $otpCodeParam   =   $this->request->getVar('otpCode');
+
+        if(!isset($this->userData)) return throwResponseNotAcceptable('Gagal memverifikasi kode OTP, token tidak ditemukan. Harap ulangi proses login dari awal');
+        
         $idCustomer     =   $this->userData->idCustomer;
         $otpCodeToken   =   $this->userData->otpCode;
         $otpCodeExpired =   $this->userData->otpCodeExpired;

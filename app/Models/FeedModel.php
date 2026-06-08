@@ -39,11 +39,17 @@ class FeedModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getDataFeed()
+    public function getDataFeed($idCustomer, $isBookmark = false)
     {	
-        $this->select("IDFEED, URLFEED, JUDUL, DESKRIPSI, TOTALSUKA, TOTALSIMPAN");
-        $this->from('t_feed', true);
-
+        $this->select("A.IDFEED, A.URLFEED, A.JUDUL, A.DESKRIPSI, A.TOTALSUKA, A.TOTALSIMPAN,
+                    IF(B.IDFEEDSUKA IS NOT NULL, 1, 0) AS ISSUKA, IF(C.IDFEEDBOOKMARK IS NOT NULL, 1, 0) AS ISBOOKMARK");
+        $this->from('t_feed AS A', true);
+        $this->join('t_feedsuka AS B', 'A.IDFEED = B.IDFEED AND B.IDCUSTOMER = '.$idCustomer, 'LEFT');
+        $this->join('t_feedbookmark AS C', 'A.IDFEED = C.IDFEED AND C.IDCUSTOMER = '.$idCustomer, 'LEFT');
+        
+        if($isBookmark) {
+            $this->where('C.IDFEEDBOOKMARK IS NOT NULL');
+        }
         return $this;
 	}
 }
