@@ -41,10 +41,10 @@ class ProfileModel extends Model
 
     public function getDetailProfile($idCustomer)
     {	
-        $this->select("B.ROYALTITIER, B.DESKRIPSI AS ROYALTIDESKRIPSI, IFNULL(COUNT(C.IDTRANSAKSIREKAP), 0) AS JUMLAHTRANSAKSI,
+        $this->select("B.LOYALTITIER, B.DESKRIPSI AS LOYALTIDESKRIPSI, IFNULL(COUNT(C.IDTRANSAKSIREKAP), 0) AS JUMLAHTRANSAKSI,
                     SUM(D.JUMLAH) AS TOTALITEMBARANG, B.MINIMALNOMINALPEMBELIAN");
         $this->from('m_customer AS A', true);
-        $this->join('m_customerroyalti AS B', 'A.IDCUSTOMERROYALTI = B.IDCUSTOMERROYALTI', 'LEFT');
+        $this->join('m_customerloyalti AS B', 'A.IDCUSTOMERLOYALTI = B.IDCUSTOMERLOYALTI', 'LEFT');
         $this->join('t_transaksirekap AS C', 'A.IDCUSTOMER = C.IDCUSTOMER AND C.IDCUSTOMER = '.$idCustomer.' AND C.ISPESANANSELESAI = 1', 'LEFT');
         $this->join('t_transaksibarang AS D', 'C.IDTRANSAKSIREKAP = D.IDTRANSAKSIREKAP', 'LEFT');
         $this->where('A.IDCUSTOMER', $idCustomer);
@@ -54,8 +54,8 @@ class ProfileModel extends Model
         $result     =   $this->get()->getRowArray();
 
         if(is_null($result)) return [
-            "ROYALTITIER"      =>  "-",
-            "ROYALTIDESKRIPSI" =>  "Anda baru terdaftar sebagai customer kami"
+            "LOYALTITIER"      =>  "-",
+            "LOYALTIDESKRIPSI" =>  "Anda baru terdaftar sebagai customer kami"
         ];
         return $result;
 	}   

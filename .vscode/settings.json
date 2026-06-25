@@ -3,8 +3,8 @@
     
     // Intelephense Configuration for CodeIgniter 4
     "intelephense.environment.includePaths": [
-        "${workspaceFolder}/vendor/codeigniter4/framework/system",
-        "${workspaceFolder}/vendor"
+        "${workspaceFolder}/../vendor/codeigniter4/framework/system",
+        "${workspaceFolder}/../vendor"
     ],
     "intelephense.files.exclude": [
         "**/vendor/**/Tests/**",

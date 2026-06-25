@@ -45,9 +45,9 @@ class Profile extends ResourceController
             "propinsi"  =>  $this->userData->propinsi
         ];
 
-        $royaltiLevel   =   [
-            "royaltiTier"       =>  "-",
-            "royaltiDeskripsi"  =>  "-"
+        $loyaltiLevel   =   [
+            "loyaltiTier"       =>  "-",
+            "loyaltiDeskripsi"  =>  "-"
         ];
 
         $statistikTransaksi =   [
@@ -77,9 +77,9 @@ class Profile extends ResourceController
         if($isRegistered){
             $profileModel   =   new ProfileModel();
             $profileData    =   $profileModel->getDetailProfile($idCustomer);
-            $royaltiLevel   =   [
-                "royaltiTier"       =>  $profileData['ROYALTITIER'] ?? "-",
-                "royaltiDeskripsi"  =>  $profileData['ROYALTIDESKRIPSI'] ?? "Anda baru terdaftar sebagai customer kami"
+            $loyaltiLevel   =   [
+                "loyaltiTier"       =>  $profileData['LOYALTITIER'] ?? "-",
+                "loyaltiDeskripsi"  =>  $profileData['LOYALTIDESKRIPSI'] ?? "Anda baru terdaftar sebagai customer kami"
             ];
 
             $strTotalItemBarang     =   '0';
@@ -161,7 +161,7 @@ class Profile extends ResourceController
         return $this->setResponseFormat('json')->respond([
             "isRegistered"          =>  $isRegistered,
             "profileData"           =>  $profileData,
-            "royaltiLevel"          =>  $royaltiLevel,
+            "loyaltiLevel"          =>  $loyaltiLevel,
             "statistikTransaksi"    =>  $statistikTransaksi,
             "informasiPribadi"      =>  $informasiPribadi,
             "informasiAlamat"       =>  $informasiAlamat
