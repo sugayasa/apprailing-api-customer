@@ -30,6 +30,8 @@ class AlterMCustomerRoyalti extends Migration
                 'NAME'       => 'ICONFILE',
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
+                'null'       => false,
+                'default'    => 'default.png',
             ],
         ]);
 
@@ -38,6 +40,7 @@ class AlterMCustomerRoyalti extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
                 'null'       => false,
+                'default'    => 'default.jpg',
                 'after'      => 'ICONFILE',
             ],
         ]);
