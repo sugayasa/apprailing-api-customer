@@ -23,14 +23,23 @@ class AddTableGaleriProyek extends Migration
                 'constraint' => 75,
                 'default'    => '',
             ],
+            'ALAMATPROYEK' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
+                'default'    => '',
+            ],
+            'DESKRIPSI' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'default'    => '',
+            ],
             'URUTAN' => [
                 'type'       => 'SMALLINT',
                 'default'    => 999,
             ],
             'IMAGE' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 50,
-                'default'    => 'default.jpg',
+                'type'       => 'JSON',
+                'null'       => true,
             ],
             'INPUTUSER' => [
                 'type'       => 'VARCHAR',
@@ -53,6 +62,7 @@ class AddTableGaleriProyek extends Migration
         ]);
 
         $this->db->query("ALTER TABLE `t_galeriproyek` AUTO_INCREMENT = 600");
+        $this->db->query("ALTER TABLE `t_galeriproyek` MODIFY COLUMN `IMAGE` JSON NOT NULL DEFAULT (JSON_ARRAY('noimage.jpg'))");
     }
 
     public function down()
