@@ -55,8 +55,6 @@ $routes->group('access', ['filter' => 'auth:mustBeLoggedIn'], function($routes) 
     $functionRoute =   'Access';
     $routes->post('getDataOption', $functionRoute.'::getDataOption');
     $routes->post('getDataOptionByKey/(:any)/(:any)/(:any)', $functionRoute.'::getDataOptionByKey/$1/$2/$3');
-    $routes->post('detailProfileSetting', $functionRoute.'::detailProfileSetting');
-    $routes->post('saveDetailProfileSetting', $functionRoute.'::saveDetailProfileSetting');
 });
 
 $routes->group('assets', [], function($routes) {

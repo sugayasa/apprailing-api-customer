@@ -37,12 +37,43 @@ class Dashboard extends ResourceController
     {
         $dashboardModel =   new DashboardModel();
         $profileData    =   [
-            "avatar"    =>  $this->userData->avatar,
-            "nama"      =>  $this->userData->nama,
-            "kota"      =>  $this->userData->kota,
-            "propinsi"  =>  $this->userData->propinsi
+            "avatar"        =>  $this->userData->avatar,
+            "nama"          =>  $this->userData->nama,
+            "tanggalLahir"  =>  $this->userData->tanggalLahir,
+            "tanggalDaftar" =>  $this->userData->tanggalDaftar,
+            "kota"          =>  $this->userData->kota,
+            "propinsi"      =>  $this->userData->propinsi
         ];
 
+        //ROYALTI DETAIL
+        $idCustomerLoyalti  =   0;
+        $totalPoinLoyalti   =   0;
+        $loyaltiDetail      =   [
+            'TANGGALDAFTAR'         =>  '-',
+            'TOTALPOIN'             =>  0,
+            'LOYALTITIER'           =>  '-',
+            'TOTALPOINSELANJUTNYA'  =>  0,
+            'LOYALTITIERSELANJUTNYA'=>  '-',
+            'ICONLOYALTI'           =>  BASE_URL_ASSETS_ICON_LEVEL_LOYALTI.'default.png',
+            'CARDLOYALTI'           =>  BASE_URL_ASSETS_CARD_LEVEL_LOYALTI.'default-card.png'
+        ];
+        if($this->userData->idCustomer && $this->userData->idCustomer != '') {
+            $loyaltiDetail  =   $dashboardModel->getLoyaltiDetail($this->userData->idCustomer);
+            if(!is_null($loyaltiDetail)){
+                $idCustomerLoyalti      =   $loyaltiDetail['IDCUSTOMERLOYALTI'];
+                $totalPoinLoyalti       =   $loyaltiDetail['TOTALPOIN'];
+                unset($loyaltiDetail['IDCUSTOMERLOYALTI']);
+            }
+        }
+
+        $detailNextTierLoyalti  =   $dashboardModel->getDetailNextTierLoyalti($idCustomerLoyalti, $totalPoinLoyalti);
+        $totalPoinSelanjutnya   =   $detailNextTierLoyalti['MINIMALPOIN'] - $totalPoinLoyalti;
+        
+        $loyaltiDetail['TOTALPOIN']             =   number_format($totalPoinLoyalti, 0, ',', '.');
+        $loyaltiDetail['TOTALPOINSELANJUTNYA']  =   $totalPoinSelanjutnya > 0 ? number_format($totalPoinSelanjutnya, 0, ',', '.') : 0;
+        $loyaltiDetail['LOYALTITIERSELANJUTNYA']=   $detailNextTierLoyalti['LOYALTITIER'];
+        
+        //SLIDE BANNER
         $dataSlideBanner=   $dashboardModel->getDataSlideBanner();
         $slideBanner    =   [];
         foreach ($dataSlideBanner as $keySlide) {
@@ -92,6 +123,7 @@ class Dashboard extends ResourceController
                 ->setResponseFormat('json')
                 ->respond([
                     "profileData"   =>  $profileData,
+                    "loyaltiDetail" =>  $loyaltiDetail,
                     "slideBanner"   =>  $slideBanner,
                     "dataMerk"      =>  $dataMerk,
                     "dataOrder"     =>  $dataOrder

@@ -38,6 +38,41 @@ class DashboardModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getLoyaltiDetail($idCustomer)
+    {
+        $this->select(
+            "A.IDCUSTOMERLOYALTI, DATE_FORMAT(MIN(A.TANGGALDAFTAR), '%d %M %Y') AS TANGGALDAFTAR, IFNULL(SUM(C.POIN), 0) AS TOTALPOIN,
+            B.LOYALTITIER, 0 AS TOTALPOINSELANJUTNYA, '-' AS LOYALTITIERSELANJUTNYA,
+            CONCAT('".BASE_URL_ASSETS_ICON_LEVEL_LOYALTI."', B.ICONFILE) AS ICONLOYALTI,
+            CONCAT('".BASE_URL_ASSETS_CARD_LEVEL_LOYALTI."', B.CARDFILE) AS CARDLOYALTI"
+        );
+        $this->from('m_customer AS A', true);
+        $this->join('m_customerloyalti AS B', 'A.IDCUSTOMERLOYALTI = B.IDCUSTOMERLOYALTI', 'LEFT');
+        $this->join('t_transaksipoin AS C', 'A.IDCUSTOMER = C.IDCUSTOMER', 'LEFT');
+        $this->where('A.IDCUSTOMER', $idCustomer);
+        $this->groupBy('A.IDCUSTOMER');
+        $this->limit(1);
+
+        return $this->get()->getRowArray();
+    }
+
+    public function getDetailNextTierLoyalti($idCustomerLoyalti, $totalPoinLoyalti)
+    {
+        $this->select("LOYALTITIER, MINIMALPOIN");
+        $this->from('m_customerloyalti', true);
+        $this->where('IDCUSTOMERLOYALTI !=', $idCustomerLoyalti);
+        $this->where('MINIMALPOIN >', $totalPoinLoyalti);
+        $this->orderBy('MINIMALPOIN', 'ASC');
+        $this->limit(1);
+
+        $result =   $this->get()->getRowArray();
+        if(is_null($result)) return [
+            'LOYALTITIER'   =>  '-',
+            'MINIMALPOIN'   =>  0
+        ];
+        return $result;
+    }
     
     public function getDataSlideBanner()
     {	

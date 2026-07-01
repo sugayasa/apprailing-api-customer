@@ -69,12 +69,13 @@ class Access extends ResourceController
         $captchaCode        =   APP_IS_PRODUCTION ? generateRandomCharacter(4, 3) : 'AAAA';
 
         $userData   =   array(
-            "avatar"    =>  BASE_URL_ASSETS_CUSTOMER_AVATAR."default.jpg",
-            "nama"      =>  "Guest",
-            "email"     =>  "-",
-            "nomorHP"   =>  "-",
-            "kota"      =>  APP_DEFAULT_ALAMAT_KOTA,
-            "propinsi"  =>  APP_DEFAULT_ALAMAT_PROPINSI
+            "avatar"        =>  BASE_URL_ASSETS_CUSTOMER_AVATAR."default.jpg",
+            "nama"          =>  "Guest",
+            "email"         =>  "-",
+            "nomorHP"       =>  "-",
+            "tanggalLahir"  =>  "-",
+            "kota"          =>  APP_DEFAULT_ALAMAT_KOTA,
+            "propinsi"      =>  APP_DEFAULT_ALAMAT_PROPINSI
         );
 
         $tokenPayload   =   array(
@@ -138,62 +139,65 @@ class Access extends ResourceController
                         $namaDB             =   isset($detailCustomerDB['NAMA']) ? $detailCustomerDB['NAMA'] : '';
                         $emailDB            =   isset($detailCustomerDB['EMAIL']) ? $detailCustomerDB['EMAIL'] : '';
                         $nomorHPDB          =   isset($detailCustomerDB['NOMORHP']) ? $detailCustomerDB['NOMORHP'] : '';
+                        $tanggalLahirDB     =   isset($detailCustomerDB['TANGGALLAHIR']) ? $detailCustomerDB['TANGGALLAHIR'] : '';
                         $kotaDB             =   isset($detailCustomerDB['KOTA']) ? $detailCustomerDB['KOTA'] : APP_DEFAULT_ALAMAT_KOTA;
                         $propinsiDB         =   isset($detailCustomerDB['PROPINSI']) ? $detailCustomerDB['PROPINSI'] : APP_DEFAULT_ALAMAT_PROPINSI;
                         $userData           =   [
-                            "avatar"    =>  $avatarDB,
-                            "nama"      =>  $namaDB,
-                            "email"     =>  $emailDB,
-                            "nomorHP"   =>  $nomorHPDB,
-                            "kota"      =>  $kotaDB,
-                            "propinsi"  =>  $propinsiDB
+                            "avatar"        =>  $avatarDB,
+                            "nama"          =>  $namaDB,
+                            "email"         =>  $emailDB,
+                            "nomorHP"       =>  $nomorHPDB,
+                            "tanggalLahir"  =>  $tanggalLahirDB,
+                            "kota"          =>  $kotaDB,
+                            "propinsi"      =>  $propinsiDB
                         ];
 
-                        $tokenPayload['idCustomer'] =   $idCustomerDB;
-                        $tokenPayload['idSession']  =   $idSession;
-                        $tokenPayload['avatar']     =   $avatarDB;
-                        $tokenPayload['nama']       =   $namaDB;
-                        $tokenPayload['email']      =   $emailDB;
-                        $tokenPayload['nomorHP']    =   $nomorHPDB;
-                        $tokenPayload['kota']       =   $kotaDB;
-                        $tokenPayload['propinsi']   =   $propinsiDB;
-                        $statusCode                 =   200;
-                        $responseMsg                =   'Sesi aktif, lanjutkan';
+                        $tokenPayload['idCustomer']     =   $idCustomerDB;
+                        $tokenPayload['idSession']      =   $idSession;
+                        $tokenPayload['avatar']         =   $avatarDB;
+                        $tokenPayload['nama']           =   $namaDB;
+                        $tokenPayload['email']          =   $emailDB;
+                        $tokenPayload['nomorHP']        =   $nomorHPDB;
+                        $tokenPayload['tanggalLahir']   =   $tanggalLahirDB;
+                        $tokenPayload['kota']           =   $kotaDB;
+                        $tokenPayload['propinsi']       =   $propinsiDB;
+                        $statusCode                     =   200;
+                        $responseMsg                    =   'Sesi aktif, lanjutkan';
                     } else {
                         return throwResponseUnauthorized(
-                                    'Hardware ID perangkat berubah, harap login untuk melanjutkan',
-                                    [
-                                        'token'     =>  $defaultToken,
-                                        'errorCode' =>  '[E-AUTH-001.1.3]'
-                                    ]
-                                );
+                            'Hardware ID perangkat berubah, harap login untuk melanjutkan',
+                            [
+                                'token'     =>  $defaultToken,
+                                'errorCode' =>  '[E-AUTH-001.1.3]'
+                            ]
+                        );
                     }
                 }
             } catch (\Throwable $th) {
                 return throwResponseUnauthorized(
-                            'Token tidak valid',
-                            [
-                                'token'     =>  $defaultToken,
-                                'errorCode' =>  '[E-AUTH-001.2.1]',
-                                'message'   =>  ENVIRONMENT === 'development' ? $th->getMessage() : ''
-                            ]
-                        );
+                    'Token tidak valid',
+                    [
+                        'token'     =>  $defaultToken,
+                        'errorCode' =>  '[E-AUTH-001.2.1]',
+                        'message'   =>  ENVIRONMENT === 'development' ? $th->getMessage() : ''
+                    ]
+                );
             }
         }
 
         $newToken       =   encodeJWTToken($tokenPayload);
         $optionHelper   =   isset($token) && $token != "" ? $this->getDataOption() : [];
-        return $this->setResponseFormat('json')
-                    ->respond([
-                        'token'         =>  $newToken,
-                        'slideBoarding' =>  !isset($token) || $token == "" ? $this->getSlideBoarding() : [],
-                        'userData'      =>  $userData,
-                        'optionHelper'  =>  $optionHelper,
-                        'messages'      =>  [
-                            "accessMessage" =>  $responseMsg
-                        ]
-                    ])
-                    ->setStatusCode($statusCode);
+
+        return $this->setResponseFormat('json')->respond([
+            'token'         =>  $newToken,
+            'slideBoarding' =>  !isset($token) || $token == "" ? $this->getSlideBoarding() : [],
+            'userData'      =>  $userData,
+            'optionHelper'  =>  $optionHelper,
+            'messages'      =>  [
+                "accessMessage" =>  $responseMsg
+            ]
+        ])
+        ->setStatusCode($statusCode);
 
     }
 
@@ -211,6 +215,7 @@ class Access extends ResourceController
             'nama'          =>  ['label' => 'Nama', 'rules' => 'required|alpha_numeric_space|max_length[100]'],
             'email'         =>  ['label' => 'Email', 'rules' => 'permit_empty|valid_email'],
             'phoneNumber'   =>  ['label' => 'Nomor Telepon', 'rules' => 'permit_empty|min_length[10]|max_length[15]|numeric'],
+            'tanggalLahir'  =>  ['label' => 'Tanggal Lahir', 'rules' => 'permit_empty|valid_date[Y-m-d]'],
             'captcha'       =>  ['label' => 'Captcha', 'rules' => 'required|alpha_numeric|exact_length[4]']
         ];
 
@@ -235,6 +240,7 @@ class Access extends ResourceController
         $nama           =   $this->request->getVar('nama');
         $email          =   $this->request->getVar('email');
         $phoneNumber    =   $this->request->getVar('phoneNumber');
+        $tanggalLahir   =   $this->request->getVar('tanggalLahir');
         $captcha        =   $this->request->getVar('captcha');
         $captchaToken   =   $this->userData->captchaCode;
         $otpCode        =   is_null(issetNotNullAndNotEmptyString($this->userData->otpCode)) ? null : $this->userData->otpCode;
@@ -259,10 +265,10 @@ class Access extends ResourceController
 
         switch($emailPhoneNumberType){
             case 'EM':
-                $this->sendEmailOTPCustomer($email, $nama, $otpCode, 'mendaftar');
+                if(APP_IS_PRODUCTION) $this->sendEmailOTPCustomer($email, $nama, $otpCode, 'mendaftar');
                 break;
             case 'PN':
-                $this->sendWhatsAppOTPCustomer($phoneNumber, $otpCode);
+                if(APP_IS_PRODUCTION) $this->sendWhatsAppOTPCustomer($phoneNumber, $otpCode);
                 break;
         }
 
@@ -270,6 +276,7 @@ class Access extends ResourceController
             "nama"          =>  $nama,
             "email"         =>  $email,
             "nomorHP"       =>  $phoneNumber,
+            "tanggalLahir"  =>  $tanggalLahir,
             "otpCode"       =>  $otpCode,
             "otpCodeExpired"=>  strtotime($this->currentDateTime) + (APP_OTP_EXPIRED_MINUTES*60)
         );
@@ -322,11 +329,14 @@ class Access extends ResourceController
         $nama               =   $this->userData->nama;
         $email              =   $this->userData->email;
         $phoneNumber        =   $this->userData->nomorHP;
+        $tanggalLahir       =   $this->userData->tanggalLahir;
         $arrInsertCustomer  =   [
-            "NAMA"      =>  $nama,
-            "EMAIL"     =>  $email,
-            "NOMORHP"   =>  $phoneNumber,
-            "STATUS"    =>  1
+            "NAMA"          =>  $nama,
+            "EMAIL"         =>  $email,
+            "NOMORHP"       =>  $phoneNumber,
+            "TANGGALLAHIR"  =>  $tanggalLahir,
+            "TANGGALDAFTAR" =>  date('Y-m-d'),
+            "STATUS"        =>  1
         ];
 
         $procInsertCustomer =   $mainOperation->insertDataTable('m_customer', $arrInsertCustomer);
@@ -658,7 +668,6 @@ class Access extends ResourceController
 
     public function getDataOptionByKey($keyName, $optionName = false, $keyword = false)
     {
-        $accessModel    =   new AccessModel();
         $optionName     =   $optionName != false ? $optionName : 'randomOption';
         $dataOption     =   [];
         $arrEncodeKey   =   ['ID'];
@@ -674,72 +683,5 @@ class Access extends ResourceController
                     "dataOption"    =>  $dataOption,
                     "optionName"    =>  $optionName
                 ]);
-    }
-
-    public function detailProfileSetting()
-    {
-        $accessModel    =   new AccessModel();
-        $idUserAdmin    =   $this->userData->idUserAdmin;
-        $detailUserAdmin=   $accessModel->getUserAdminDetail($idUserAdmin);
-
-        if(is_null($detailUserAdmin)) return throwResponseNotFound("Detail profil tidak ditemukan");
-        unset($detailUserAdmin['IDUSERADMINLEVEL']);
-        return $this->setResponseFormat('json')
-                    ->respond([
-                        "detailUserAdmin"   =>  $detailUserAdmin
-                     ]);
-    }
-
-    public function saveDetailProfileSetting()
-    {
-        helper(['form']);
-        $idUserAdmin  =   $this->userData->idUserAdmin;
-        $rules          =   [
-            'username'  => ['label' => 'Username', 'rules' => 'required|alpha_numeric|min_length[4]'],
-            'name'      => ['label' => 'Nama', 'rules' => 'required|alpha_numeric_space|min_length[4]'],
-        ];
-
-        if(!$this->validate($rules)) return $this->fail($this->validator->getErrors());
-
-        $accessModel        =   new AccessModel();
-        $username           =   $this->request->getVar('username');
-        $name               =   $this->request->getVar('name');
-        $currentPassword    =   $this->request->getVar('currentPassword');
-        $newPassword        =   $this->request->getVar('newPassword');
-        $repeatPassword     =   $this->request->getVar('repeatPassword');
-        $relogin            =   false;
-
-        $arrUpdateUserAdmin =   [
-            'NAME'      =>  $name,
-            'USERNAME'  =>  $username
-        ];
-
-        if($currentPassword != "" || $newPassword != "" || $repeatPassword != ""){
-			if($currentPassword == "") return throwResponseNotAcceptable("Harap masukkan kata sandi lama Anda (kata sandi saat ini)");
-			if($newPassword == "") return throwResponseNotAcceptable("Harap masukkan kata sandi baru");
-            if($repeatPassword == "") return throwResponseNotAcceptable("Harap masukkan pengulangan kata sandi baru");
-			if($newPassword != $repeatPassword) return throwResponseNotAcceptable("Pengulangan kata sandi yang Anda masukkan tidak cocok");
-			
-            $dataCustomer  =   $accessModel->where("IDUSERADMIN", $idUserAdmin)->first();
-            if(!$dataCustomer) return $this->failNotFound('Data profil Anda tidak ditemukan, silakan coba lagi nanti');
-            $passwordVerify =   password_verify($currentPassword, $dataCustomer['PASSWORD']);
-            if(!$passwordVerify) return $this->fail('Kata sandi lama yang Anda masukkan salah');
-			
-			$arrUpdateUserAdmin['PASSWORD'] =	password_hash($newPassword, PASSWORD_DEFAULT);
-            $relogin                        =   true;
-		}
-
-        $accessModel->update($idUserAdmin, $arrUpdateUserAdmin);
-        $tokenUpdate    =   [
-            "username"  =>  $username,
-            "name"      =>  $name
-        ];
-
-        return $this->setResponseFormat('json')
-                    ->respond([
-                        "message"       =>  "Data profil Anda telah diperbarui",
-                        "relogin"       =>  $relogin,
-                        "tokenUpdate"   =>  $tokenUpdate
-                     ]);
     }
 }
