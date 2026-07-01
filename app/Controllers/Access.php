@@ -85,6 +85,7 @@ class Access extends ResourceController
             "nama"              =>  "Guest",
             "email"             =>  "-",
             "nomorHP"           =>  "-",
+            "tanggalLahir"      =>  "-",
             "kota"              =>  APP_DEFAULT_ALAMAT_KOTA,
             "propinsi"          =>  APP_DEFAULT_ALAMAT_PROPINSI,
             "hardwareID"        =>  $hardwareID,

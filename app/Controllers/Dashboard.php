@@ -40,7 +40,6 @@ class Dashboard extends ResourceController
             "avatar"        =>  $this->userData->avatar,
             "nama"          =>  $this->userData->nama,
             "tanggalLahir"  =>  $this->userData->tanggalLahir,
-            "tanggalDaftar" =>  $this->userData->tanggalDaftar,
             "kota"          =>  $this->userData->kota,
             "propinsi"      =>  $this->userData->propinsi
         ];
