@@ -73,6 +73,23 @@ class DashboardModel extends Model
         ];
         return $result;
     }
+
+    public function getReviewMarketing($idCustomer, $isDeveloper = 0)
+    {
+        $this->select(
+            'NAMAMARKETING, RATING, KOMENTAR, CONCAT("'.BASE_URL_ASSETS_IMAGE_MARKETING.'", IMAGEMARKETING) AS IMAGEMARKETING,
+            DATE_FORMAT(TANGGAL, "%d %M %Y") AS TANGGAL'
+        );
+        $this->from('t_reviewmarketing', true);
+        $this->where('IDCUSTOMER', $idCustomer);
+        if($isDeveloper == 1) $this->orWhere('IDCUSTOMER', 0);
+        $this->orderBy('TANGGALWAKTU', 'DESC');
+        $this->limit(1);
+
+        $result =   $this->get()->getRowArray();
+        if(is_null($result)) return [];
+        return $result;
+    }
     
     public function getDataSlideBanner()
     {	

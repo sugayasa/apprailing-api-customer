@@ -65,6 +65,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('pdfKatalog/thumbnail/(:any)', 'Assets::pdfKatalogThumbnail/$1');
     $routes->get('pdfKatalog/file/(:any)', 'Assets::pdfKatalogFile/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
+    $routes->get('imageMarketing/(:any)', 'Assets::imageMarketing/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerQRImage/(:any)', 'Assets::customerQRImage/$1');
     $routes->get('customerSlideBoarding/(:any)', 'Assets::customerSlideBoarding/$1');

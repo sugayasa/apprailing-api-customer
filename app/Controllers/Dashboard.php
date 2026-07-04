@@ -36,6 +36,7 @@ class Dashboard extends ResourceController
     public function getDataDashboard()
     {
         $dashboardModel =   new DashboardModel();
+        $isDeveloper    =   isset($this->userData->isDeveloper) ? (int)$this->userData->isDeveloper : 0;
         $profileData    =   [
             "avatar"        =>  $this->userData->avatar,
             "nama"          =>  $this->userData->nama,
@@ -56,6 +57,7 @@ class Dashboard extends ResourceController
             'ICONLOYALTI'           =>  BASE_URL_ASSETS_ICON_LEVEL_LOYALTI.'default.png',
             'CARDLOYALTI'           =>  BASE_URL_ASSETS_CARD_LEVEL_LOYALTI.'default-card.png'
         ];
+
         if($this->userData->idCustomer && $this->userData->idCustomer != '') {
             $loyaltiDetail  =   $dashboardModel->getLoyaltiDetail($this->userData->idCustomer);
             if(!is_null($loyaltiDetail)){
@@ -72,6 +74,9 @@ class Dashboard extends ResourceController
         $loyaltiDetail['TOTALPOINSELANJUTNYA']  =   $totalPoinSelanjutnya > 0 ? number_format($totalPoinSelanjutnya, 0, ',', '.') : 0;
         $loyaltiDetail['LOYALTITIERSELANJUTNYA']=   $detailNextTierLoyalti['LOYALTITIER'];
         
+        //REVIEW MARKETING
+        $reviewMarketing=   $this->userData->idCustomer && $this->userData->idCustomer != '' ? $dashboardModel->getReviewMarketing($this->userData->idCustomer, $isDeveloper) : [];
+
         //SLIDE BANNER
         $dataSlideBanner=   $dashboardModel->getDataSlideBanner();
         $slideBanner    =   [];
@@ -83,6 +88,7 @@ class Dashboard extends ResourceController
             ];
         }
 
+        //DATA MERK
         $dataMerkDB =   $dashboardModel->getDataMerk();
         $dataMerk   =   [];
         foreach ($dataMerkDB as $keyMerk) {
@@ -93,6 +99,7 @@ class Dashboard extends ResourceController
             ];
         }
 
+        //DATA ORDER TERAKHIR
         $dataOrderDB=   $dashboardModel->getDataOrderTerakhir($this->userData->idCustomer);
         $dataOrder  =   [];
         foreach ($dataOrderDB as $keyOrder) {
@@ -121,11 +128,12 @@ class Dashboard extends ResourceController
         return $this
                 ->setResponseFormat('json')
                 ->respond([
-                    "profileData"   =>  $profileData,
-                    "loyaltiDetail" =>  $loyaltiDetail,
-                    "slideBanner"   =>  $slideBanner,
-                    "dataMerk"      =>  $dataMerk,
-                    "dataOrder"     =>  $dataOrder
+                    "profileData"       =>  $profileData,
+                    "loyaltiDetail"     =>  $loyaltiDetail,
+                    "reviewMarketing"   =>  $reviewMarketing,
+                    "slideBanner"       =>  $slideBanner,
+                    "dataMerk"          =>  $dataMerk,
+                    "dataOrder"         =>  $dataOrder
                 ]);
     }
 

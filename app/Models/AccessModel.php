@@ -42,13 +42,14 @@ class AccessModel extends Model
 
     public function getDataCustomer($email, $phoneNumber)
     {
-        $this->select('IDCUSTOMER, NAMA, EMAIL, NOMORHP');
-        $this->from('m_customer', true);
+        $this->select('A.IDCUSTOMER, A.NAMA, A.EMAIL, A.NOMORHP, A.AVATAR, A.TANGGALLAHIR, B.KOTA, B.PROPINSI, A.ISDEVELOPER');
+        $this->from('m_customer AS A', true);
+        $this->join('m_customeralamat AS B', 'A.IDCUSTOMER = B.IDCUSTOMER AND B.ISALAMATUTAMA = 1', 'LEFT');
         $this->groupStart();
-        $this->where('EMAIL', $email);
-        $this->orWhere('NOMORHP', $phoneNumber);
+        $this->where('A.EMAIL', $email);
+        $this->orWhere('A.NOMORHP', $phoneNumber);
         $this->groupEnd();
-        $this->where('STATUS', 1);
+        $this->where('A.STATUS', 1);
 
         return $this->get()->getRowArray();
     }
@@ -57,7 +58,7 @@ class AccessModel extends Model
     {
         $this->select(
             "A.AVATAR, A.NAMA, A.EMAIL, A.NOMORHP, DATE_FORMAT(A.TANGGALLAHIR, '%d %M %Y') AS TANGGALLAHIR,
-            B.ALAMAT, B.KOTA, B.PROPINSI"
+            B.ALAMAT, B.KOTA, B.PROPINSI, A.ISDEVELOPER"
         );
         $this->from('m_customer AS A', true);
         $this->join('m_customeralamat AS B', 'A.IDCUSTOMER = B.IDCUSTOMER AND B.ISALAMATUTAMA = 1', 'LEFT');

@@ -93,7 +93,8 @@ class Access extends ResourceController
             "platform"          =>  $platform,
             "captchaCode"       =>  $captchaCode,
             "otpCode"           =>  "",
-            "timeCreate"        =>  $timeCreate
+            "timeCreate"        =>  $timeCreate,
+            "isDeveloper"       =>  0
         );
 
         $defaultToken   =   encodeJWTToken($tokenPayload);
@@ -143,6 +144,7 @@ class Access extends ResourceController
                         $tanggalLahirDB     =   isset($detailCustomerDB['TANGGALLAHIR']) ? $detailCustomerDB['TANGGALLAHIR'] : '';
                         $kotaDB             =   isset($detailCustomerDB['KOTA']) ? $detailCustomerDB['KOTA'] : APP_DEFAULT_ALAMAT_KOTA;
                         $propinsiDB         =   isset($detailCustomerDB['PROPINSI']) ? $detailCustomerDB['PROPINSI'] : APP_DEFAULT_ALAMAT_PROPINSI;
+                        $isDeveloperDB      =   isset($detailCustomerDB['ISDEVELOPER']) ? (int)$detailCustomerDB['ISDEVELOPER'] : 0;
                         $userData           =   [
                             "avatar"        =>  $avatarDB,
                             "nama"          =>  $namaDB,
@@ -162,6 +164,7 @@ class Access extends ResourceController
                         $tokenPayload['tanggalLahir']   =   $tanggalLahirDB;
                         $tokenPayload['kota']           =   $kotaDB;
                         $tokenPayload['propinsi']       =   $propinsiDB;
+                        $tokenPayload['isDeveloper']    =   $isDeveloperDB;
                         $statusCode                     =   200;
                         $responseMsg                    =   'Sesi aktif, lanjutkan';
                     } else {
@@ -199,7 +202,6 @@ class Access extends ResourceController
             ]
         ])
         ->setStatusCode($statusCode);
-
     }
 
     private function getSlideBoarding()
@@ -411,6 +413,7 @@ class Access extends ResourceController
         if(!$dataCustomer) return $this->failNotFound('Tidak ada data yang cocok, masukkan email atau nomor telepon lain');
  
         $idCustomer             =   $dataCustomer['IDCUSTOMER'];
+        $avatar                 =   BASE_URL_ASSETS_CUSTOMER_AVATAR.(isset($dataCustomer['AVATAR']) ? $dataCustomer['AVATAR'] : 'default.jpg');
         $nama                   =   $dataCustomer['NAMA'];
         $emailDB                =   $dataCustomer['EMAIL'];
         $phoneNumberDB          =   $dataCustomer['NOMORHP'];
@@ -429,13 +432,18 @@ class Access extends ResourceController
                 if(!$isDeveloperLogin) $this->sendWhatsAppOTPCustomer($phoneNumber, $otpCode);
                 break;
         }
-
+        
         $tokenUpdate    =   array(
             "idCustomer"    =>  $idCustomer,
             "idSession"     =>  0,
+            "avatar"        =>  $avatar,
             "nama"          =>  $nama,
             "email"         =>  $emailDB,
             "nomorHP"       =>  $phoneNumberDB,
+            "tanggalLahir"  =>  $dataCustomer['TANGGALLAHIR'],
+            "kota"          =>  $dataCustomer['KOTA'],
+            "propinsi"      =>  $dataCustomer['PROPINSI'],
+            "isDeveloper"   =>  $dataCustomer['ISDEVELOPER'],
             "otpCode"       =>  $otpCode,
             "otpCodeExpired"=>  strtotime($this->currentDateTime) + (APP_OTP_EXPIRED_MINUTES*60)
         );
