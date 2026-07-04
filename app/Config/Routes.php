@@ -60,6 +60,10 @@ $routes->group('access', ['filter' => 'auth:mustBeLoggedIn'], function($routes) 
 $routes->group('assets', [], function($routes) {
     $routes->get('logoMerk/(:any)', 'Assets::logoMerk/$1');
     $routes->get('logoMarketplace/(:any)', 'Assets::logoMarketplace/$1');
+    $routes->get('cardLevelLoyalti/(:any)', 'Assets::cardLevelLoyalti/$1');
+    $routes->get('iconLevelLoyalti/(:any)', 'Assets::iconLevelLoyalti/$1');
+    $routes->get('pdfKatalog/thumbnail/(:any)', 'Assets::pdfKatalogThumbnail/$1');
+    $routes->get('pdfKatalog/file/(:any)', 'Assets::pdfKatalogFile/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerSlideBoarding/(:any)', 'Assets::customerSlideBoarding/$1');
@@ -73,6 +77,11 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
 });
 $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
+
+$routes->group('katalogBrosur', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'KatalogBrosur';
+    $routes->post('getDataMerkKatalog', $functionRoute.'::getDataMerkKatalog');
+});
 
 $routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Feed';

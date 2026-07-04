@@ -43,6 +43,42 @@ class Assets extends ResourceController
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function cardLevelLoyalti($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function iconLevelLoyalti($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI  .'default.png';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function pdfKatalogThumbnail($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_PDF_KATALOG_THUMBNAIL.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_PDF_KATALOG_THUMBNAIL  .'default.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function pdfKatalogFile($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_PDF_KATALOG_FILE.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_PDF_KATALOG_FILE  .'default.pdf';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function photoBarang($nameFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$nameFile;
@@ -95,24 +131,6 @@ class Assets extends ResourceController
         $defaultFilePath=   PATH_STORAGE_CUSTOMER_PRODUK  .'default.jpg';
 
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
-    }
-
-    public function cardLevelLoyalti($namaFile)
-    {
-        $fullFilePath   =   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI.$namaFile;
-        $isDefault      =   strpos($namaFile, 'default') !== false;
-        $defaultFilePath=   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.jpg';
-
-        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
-    }
-
-    public function iconLevelLoyalti($namaFile)
-    {
-        $fullFilePath   =   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI.$namaFile;
-        $isDefault      =   strpos($namaFile, 'default') !== false;
-        $defaultFilePath=   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI  .'default.png';
-
-        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     private function setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath)
