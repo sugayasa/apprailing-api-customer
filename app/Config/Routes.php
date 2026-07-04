@@ -66,6 +66,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('pdfKatalog/file/(:any)', 'Assets::pdfKatalogFile/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
+    $routes->get('customerQRImage/(:any)', 'Assets::customerQRImage/$1');
     $routes->get('customerSlideBoarding/(:any)', 'Assets::customerSlideBoarding/$1');
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
@@ -88,6 +89,11 @@ $routes->group('feed', ['filter' => 'auth:allowNotLoggedIn'], function($routes) 
     $routes->post('getDataFeed', $functionRoute.'::getDataFeed');
     $routes->post('setSukaFeed', $functionRoute.'::setSukaFeed');
     $routes->post('setBookmarkFeed', $functionRoute.'::setBookmarkFeed');
+});
+
+$routes->group('scanQR', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'ScanQR';
+    $routes->post('getDetailQRCustomer', $functionRoute.'::getDetailQRCustomer');
 });
 
 $routes->group('katalog', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {

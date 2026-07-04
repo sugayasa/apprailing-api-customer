@@ -332,3 +332,19 @@ if (!function_exists('validateHeadersRequiredParams')) {
         ];
     }
 }
+
+if (!function_exists('generateCustomerCode')) {
+    /**
+     * Generate unique customer code consisting of 3 uppercase letters (derived from ID) + 5 zero-padded digits.
+     * Example: ID 1 → "AAA00001", ID 27 → "ABA00027"
+     *
+     * @param int $idCustomer
+     * @return string
+     */
+    function generateCustomerCode(int $idCustomer): string
+    {   
+        $letters    =   generateRandomCharacter(3, 3);
+        $numbers    =   str_pad($idCustomer, 5, '0', STR_PAD_LEFT);
+        return $letters . $numbers;
+    }
+}

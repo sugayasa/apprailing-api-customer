@@ -334,7 +334,7 @@ class Access extends ResourceController
         $arrInsertCustomer  =   [
             "NAMA"          =>  $nama,
             "EMAIL"         =>  $email,
-            "NOMORHP"       =>  $phoneNumber,
+            "NOMORHP"       =>  $phoneNumber == "" ? null : $phoneNumber,
             "TANGGALLAHIR"  =>  $tanggalLahir,
             "TANGGALDAFTAR" =>  date('Y-m-d'),
             "STATUS"        =>  1
@@ -356,6 +356,12 @@ class Access extends ResourceController
                 "idSession" =>  $idSession,
                 "otpCode"   =>  ""
             );
+            
+            $kodeUniCustomer    =   generateCustomerCode($idCustomer);
+            $arrUpdateCustomer  =   [
+                "KODEUNIK"      =>  $kodeUniCustomer,
+            ];
+            $mainOperation->updateDataTable('m_customer', $arrUpdateCustomer, ['IDCUSTOMER' => $idCustomer]);
 
             return $this->setResponseFormat('json')
                         ->respond([

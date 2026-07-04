@@ -7,6 +7,8 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class Assets extends ResourceController
 {
@@ -95,6 +97,23 @@ class Assets extends ResourceController
         $defaultFilePath=   PATH_STORAGE_CUSTOMER_AVATAR  .'default.jpg';
 
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function customerQRImage($tokenQRImage)
+    {
+        $writer =   new PngWriter();
+        $qrCode =   new QrCode(
+            data: $tokenQRImage,
+            size: 300,
+            margin: 1
+        );
+
+        $result =   $writer->write($qrCode);
+
+        return $this->response
+            ->setHeader('Content-Type', 'image/png')
+            ->setHeader('Content-Disposition', 'inline; filename="' . $tokenQRImage . '.png"')
+            ->setBody($result->getString());
     }
 
     public function customerSlideBoarding($nameFile)
