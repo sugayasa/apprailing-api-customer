@@ -70,6 +70,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('customerQRImage/(:any)', 'Assets::customerQRImage/$1');
     $routes->get('customerSlideBoarding/(:any)', 'Assets::customerSlideBoarding/$1');
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
+    $routes->get('customerVideoCaraPemasangan/(:any)', 'Assets::customerVideoCaraPemasangan/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
 });
@@ -77,6 +78,7 @@ $routes->group('assets', [], function($routes) {
 $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Dashboard';
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
+    $routes->post('getDetailVideoCaraPemasangan', $functionRoute.'::getDetailVideoCaraPemasangan');
 });
 $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
 

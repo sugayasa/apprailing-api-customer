@@ -89,6 +89,10 @@ class Dashboard extends ResourceController
             ];
         }
 
+        //VIDEO CARA PEMASANGAN
+        $videoCaraPemasangan    =   $dashboardModel->getDataVideoCaraPemasangan();
+        $videoCaraPemasangan    =   encodeDatabaseObjectResultKey($videoCaraPemasangan, ['IDVIDEOCARAPEMASANGAN']);
+
         //DATA MERK
         $dataMerkDB =   $dashboardModel->getDataMerk();
         $dataMerk   =   [];
@@ -129,12 +133,13 @@ class Dashboard extends ResourceController
         return $this
                 ->setResponseFormat('json')
                 ->respond([
-                    "profileData"       =>  $profileData,
-                    "loyaltiDetail"     =>  $loyaltiDetail,
-                    "reviewMarketing"   =>  $reviewMarketing,
-                    "slideBanner"       =>  $slideBanner,
-                    "dataMerk"          =>  $dataMerk,
-                    "dataOrder"         =>  $dataOrder
+                    "profileData"           =>  $profileData,
+                    "loyaltiDetail"         =>  $loyaltiDetail,
+                    "reviewMarketing"       =>  $reviewMarketing,
+                    "slideBanner"           =>  $slideBanner,
+                    "videoCaraPemasangan"   =>  $videoCaraPemasangan,
+                    "dataMerk"              =>  $dataMerk,
+                    "dataOrder"             =>  $dataOrder
                 ]);
     }
 
@@ -147,6 +152,42 @@ class Dashboard extends ResourceController
         if(is_null($detailSlideBanner)) return view('errors/cli/artikel_tidak_ditemukan');
         return view('detail_artikel', [
             'konten' => $detailSlideBanner['KONTEN']
+        ]);
+    }
+
+    public function getDetailVideoCaraPemasangan()
+    {
+        $rules      =   [
+            'idVideoCaraPemasangan'     =>  ['label' => 'Id Video Cara Pemasangan', 'rules' => 'required|alpha_numeric'],
+        ];
+
+        $messages   =   [
+            'idVideoCaraPemasangan'    =>   [
+                'required'      => 'Video cara pemasangan yang dipilih tidak valid, silakan coba lagi nanti',
+                'alpha_numeric' => 'Video cara pemasangan yang dipilih tidak valid, silakan coba lagi nanti'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        $dashboardModel             =   new DashboardModel();
+        $idVideoCaraPemasangan      =   $this->request->getVar('idVideoCaraPemasangan');
+        $idVideoCaraPemasangan      =   hashidDecode($idVideoCaraPemasangan);
+        $detailVideoCaraPemasangan  =   $dashboardModel->getDetailVideoCaraPemasangan($idVideoCaraPemasangan);
+
+        if(is_null($detailVideoCaraPemasangan)) {
+            $detailVideoCaraPemasangan  =   [
+                "JUDUL"     =>  "-",
+                "KONTEN"    =>  view('errors/cli/artikel_tidak_ditemukan'),
+                "URLVIDEO"  =>  "#"
+            ];
+        } else {
+            $detailVideoCaraPemasangan['KONTEN']    =   view('detail_artikel', [
+                'konten' => $detailVideoCaraPemasangan['KONTEN']
+            ]);
+        }
+
+        return $this->setResponseFormat('json')->respond([
+            "detailVideoCaraPemasangan"  =>  $detailVideoCaraPemasangan
         ]);
     }
 }
