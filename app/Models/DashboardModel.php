@@ -93,7 +93,7 @@ class DashboardModel extends Model
     
     public function getDataSlideBanner()
     {	
-        $this->select('IDSLIDEBANNER, IMAGE');
+        $this->select('IDSLIDEBANNER, JUDUL,IMAGE');
         $this->from('t_slidebanner', true);
         $this->where('STATUS', 1);
         $this->orderBy('INPUTTANGGALWAKTU', 'DESC');

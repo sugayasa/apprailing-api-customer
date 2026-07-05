@@ -83,6 +83,7 @@ class Dashboard extends ResourceController
         foreach ($dataSlideBanner as $keySlide) {
             $slideBanner[] = [
                 "idSlideBanner" =>  hashidEncode($keySlide->IDSLIDEBANNER),
+                "judul"         =>  $keySlide->JUDUL,
                 "urlImage"      =>  BASE_URL_ASSETS_CUSTOMER_SLIDE_BANNER.$keySlide->IMAGE,
                 "urlDetail"     =>  BASE_URL_DETAIL_SLIDE_ARTICLE.hashidEncode($keySlide->IDSLIDEBANNER, true)
             ];
