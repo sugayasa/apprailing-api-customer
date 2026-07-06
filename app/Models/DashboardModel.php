@@ -153,6 +153,29 @@ class DashboardModel extends Model
         return $this->get()->getRowArray();
     }
 
+    public function getDataVideoCompanyProfile()
+    {
+        $this->select(
+            "IDVIDEOCOMPANYPROFILE, CONCAT('".BASE_URL_ASSETS_CUSTOMER_VIDEO_COMPANY_PROFILE."', IMAGETHUMBNAIL) AS IMAGETHUMBNAIL"
+        );
+        $this->from('t_videocompanyprofile', true);
+        $this->where('STATUS', 1);
+        $this->orderBy('URUTAN', 'ASC');
+        $this->limit(4);
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDetailVideoCompanyProfile($idVideoCompanyProfile)
+    {
+        $this->select('JUDUL, KONTEN, URLVIDEO');
+        $this->from('t_videocompanyprofile', true);
+        $this->where('IDVIDEOCOMPANYPROFILE', $idVideoCompanyProfile);
+        $this->limit(1);
+
+        return $this->get()->getRowArray();
+    }
+
     public function getDataVideoCaraPemasangan()
     {
         $this->select(

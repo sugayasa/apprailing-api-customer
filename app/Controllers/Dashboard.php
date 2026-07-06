@@ -89,6 +89,10 @@ class Dashboard extends ResourceController
             ];
         }
 
+        //VIDEO COMPANY PROFILE
+        $videoCompanyProfile    =   $dashboardModel->getDataVideoCompanyProfile();
+        $videoCompanyProfile    =   encodeDatabaseObjectResultKey($videoCompanyProfile, ['IDVIDEOCOMPANYPROFILE']);
+
         //VIDEO CARA PEMASANGAN
         $videoCaraPemasangan    =   $dashboardModel->getDataVideoCaraPemasangan();
         $videoCaraPemasangan    =   encodeDatabaseObjectResultKey($videoCaraPemasangan, ['IDVIDEOCARAPEMASANGAN']);
@@ -137,6 +141,7 @@ class Dashboard extends ResourceController
                     "loyaltiDetail"         =>  $loyaltiDetail,
                     "reviewMarketing"       =>  $reviewMarketing,
                     "slideBanner"           =>  $slideBanner,
+                    "videoCompanyProfile"   =>  $videoCompanyProfile,
                     "videoCaraPemasangan"   =>  $videoCaraPemasangan,
                     "dataMerk"              =>  $dataMerk,
                     "dataOrder"             =>  $dataOrder
@@ -152,6 +157,42 @@ class Dashboard extends ResourceController
         if(is_null($detailSlideBanner)) return view('errors/cli/artikel_tidak_ditemukan');
         return view('detail_artikel', [
             'konten' => $detailSlideBanner['KONTEN']
+        ]);
+    }
+
+    public function getDetailCompanyProfile()
+    {
+        $rules      =   [
+            'idCompanyProfile'  =>  ['label' => 'Id Company Profile', 'rules' => 'required|alpha_numeric'],
+        ];
+
+        $messages   =   [
+            'idCompanyProfile'  =>   [
+                'required'      => 'Company profile yang dipilih tidak valid, silakan coba lagi nanti',
+                'alpha_numeric' => 'Company profile yang dipilih tidak valid, silakan coba lagi nanti'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        $dashboardModel         =   new DashboardModel();
+        $idCompanyProfile       =   $this->request->getVar('idCompanyProfile');
+        $idCompanyProfile       =   hashidDecode($idCompanyProfile);
+        $detailCompanyProfile   =   $dashboardModel->getDetailVideoCompanyProfile($idCompanyProfile);
+
+        if(is_null($detailCompanyProfile)) {
+            $detailCompanyProfile   =   [
+                "JUDUL"     =>  "-",
+                "KONTEN"    =>  view('errors/cli/artikel_tidak_ditemukan'),
+                "URLVIDEO"  =>  "#"
+            ];
+        } else {
+            $detailCompanyProfile['KONTEN'] =   view('detail_artikel', [
+                'konten' => $detailCompanyProfile['KONTEN']
+            ]);
+        }
+
+        return $this->setResponseFormat('json')->respond([
+            "detailCompanyProfile"  =>  $detailCompanyProfile
         ]);
     }
 
