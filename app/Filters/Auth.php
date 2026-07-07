@@ -88,13 +88,13 @@ class Auth implements FilterInterface
 
                 $hardwareID         =   $dataDecode->hardwareID;
                 $accessModel        =   new AccessModel();
-                $isValidHardwareID  =   $accessModel->checkHardwareIDUserAdmin($idSession, $hardwareID);
+                $isValidHardwareID  =   $accessModel->checkHardwareIDCustomer($idSession, $hardwareID);
 
                 if(!$isValidHardwareID){
                     return throwResponseUnauthorized('[E-AUTH-001.1.2] Hardware ID Anda telah berubah, silakan masuk kembali untuk melanjutkan', ['idSession' => $idSession, 'hardwareID' => $hardwareID]);
                 }
 
-                $accessModel->setLastActivityUserAdmin($idSession, $request->currentDateTime);
+                $accessModel->setLastActivityCustomer($idSession, $request->currentDateTime);
             } else {
                 if($arguments && $arguments[0] != 'allowNotLoggedIn') return throwResponseUnauthorized('Anda tidak diizinkan melakukan aksi ini');
             }

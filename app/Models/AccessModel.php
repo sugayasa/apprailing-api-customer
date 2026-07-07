@@ -68,11 +68,11 @@ class AccessModel extends Model
         return $this->get()->getRowArray();
     }
 
-    public function checkHardwareIDUserAdmin($idUserAdmin, $hardwareID)
+    public function checkHardwareIDCustomer($idSession, $hardwareID)
     {
-        $this->select('IDUSERADMIN');
-        $this->from('m_useradmin', true);
-        $this->where('IDUSERADMIN', $idUserAdmin);
+        $this->select('IDSESSION');
+        $this->from('m_sessions', true);
+        $this->where('IDSESSION', $idSession);
         $this->where('HARDWAREID', $hardwareID);
 
         if(is_null($this->get()->getRowArray())) return false;
@@ -133,10 +133,10 @@ class AccessModel extends Model
         return $this->get()->getResultObject();
     }
 
-    public function setLastActivityUserAdmin($idUserAdmin, $datetimeActivity)
+    public function setLastActivityCustomer($idSession, $datetimeActivity)
     {
         $this->set('DATETIMEACTIVITY', $datetimeActivity);
-        $this->where('IDUSERADMIN', $idUserAdmin);
+        $this->where('IDSESSION', $idSession);
         $this->update();
     }
 

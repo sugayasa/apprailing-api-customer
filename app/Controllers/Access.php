@@ -592,12 +592,12 @@ class Access extends ResourceController
             $idSession      =   $dataDecode->idSession;
             $hardwareID     =   strtoupper($dataDecode->hardwareID);
             $accessModel    =   new AccessModel();
-            $userAdminDataDB=   $accessModel
+            $sessionDataDB  =   $accessModel
                                 ->where("IDSESSION", $idSession)
                                 ->first();
 
-            if($userAdminDataDB && !is_null($userAdminDataDB)) {
-                $hardwareIDDB   =   $userAdminDataDB['HARDWAREID'];
+            if($sessionDataDB && !is_null($sessionDataDB)) {
+                $hardwareIDDB   =   $sessionDataDB['HARDWAREID'];
 
                 if($hardwareID == $hardwareIDDB){
                     $accessModel->where('HARDWAREID', $hardwareID)->set('HARDWAREID', 'null', false)->update();
