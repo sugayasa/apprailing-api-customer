@@ -119,12 +119,9 @@ $routes->group('profile', ['filter' => 'auth:allowNotLoggedIn'], function($route
     $functionRoute =   'Profile';
     $routes->post('getDetailProfile', $functionRoute.'::getDetailProfile');
     
-    $routes->group('alamat', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
-        $functionRoute =   'Profile';
-        $routes->post('getDataAlamat', $functionRoute.'::getDataAlamat');
-    });
     $routes->group('alamat', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
         $functionRoute =   'Profile';
+        $routes->post('getDataAlamat', $functionRoute.'::getDataAlamat');
         $routes->post('saveDataAlamat', $functionRoute.'::saveDataAlamat');
     });
 });

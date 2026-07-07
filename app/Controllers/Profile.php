@@ -171,9 +171,9 @@ class Profile extends ResourceController
     public function getDataAlamat()
     {
         $idCustomer     =   $this->userData->idCustomer;
-        //$isRegistered   =   $idCustomer != 0 ? true : false;
+        $isRegistered   =   $idCustomer != 0 ? true : false;
         
-        //if(!$isRegistered) return throwResponseForbidden('Anda tidak memiliki akses, harap masuk atau registrasi terlebih dahulu');
+        if(!$isRegistered) return throwResponseForbidden('Anda tidak memiliki akses, harap masuk atau registrasi terlebih dahulu');
         $profileModel   =   new ProfileModel();
         $dataAlamat     =   $profileModel->getDataAlamat($idCustomer);
         
