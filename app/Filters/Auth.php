@@ -99,6 +99,7 @@ class Auth implements FilterInterface
                 if($arguments && $arguments[0] != 'allowNotLoggedIn') return throwResponseUnauthorized('Anda tidak diizinkan melakukan aksi ini');
             }
         } catch (\Throwable $th) {
+            log_message('error', "E-AUTH-001 :: ".$th->getMessage());
             return throwResponseUnauthorized('[E-AUTH-001] Token tidak valid');
         }
     }
@@ -143,6 +144,7 @@ class Auth implements FilterInterface
                             $responseBody['token']          =   $newToken;
                             unset($responseBody['tokenUpdate']);
                         } catch (\Throwable $th) {
+                            log_message('error', "Internal server error :: ".$th->getMessage());
                             return throwResponseInternalServerError("Internal server error - Auth");
                         }
                     } else {
