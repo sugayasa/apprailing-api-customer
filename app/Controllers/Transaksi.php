@@ -221,7 +221,7 @@ class Transaksi extends ResourceController
             'idCustomerAlamat'          =>  ['label' => 'Id Customer Alamat', 'rules' => 'required|alpha_numeric'],
             'idKanalPembayaran'         =>  ['label' => 'Id Kanal Pembayaran', 'rules' => 'required|alpha_numeric'],
             'idEkspedisi'               =>  ['label' => 'Id Ekspedisi', 'rules' => 'required|alpha_numeric'],
-            'catatan'                   =>  ['label' => 'Catatan', 'rules' => 'required|regex_match[/^[a-zA-Z0-9\s\p{P}]+$/u]|min_length[5]|max_length[255]'],
+            'catatan'                   =>  ['label' => 'Catatan', 'rules' => 'permit_empty|regex_match[/^[a-zA-Z0-9\s\p{P}]+$/u]|min_length[5]|max_length[255]'],
             'dataProduk.*.idProduk'     =>  ['label' => 'Produk', 'rules' => 'required|alpha_numeric'],
             'dataProduk.*.jumlah'       =>  ['label' => 'Jumlah Produk', 'rules' => 'required|numeric|greater_than[0]|min_length[1]|max_length[10]'],
             'dataProduk.*.keterangan'   =>  ['label' => 'Keterangan Produk', 'rules' => 'permit_empty|regex_match[/^[a-zA-Z0-9\s\p{P}]+$/u]|max_length[255]'],
