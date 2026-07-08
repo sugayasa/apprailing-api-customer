@@ -49,7 +49,7 @@ class Assets extends ResourceController
     {
         $fullFilePath   =   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI.$namaFile;
         $isDefault      =   strpos($namaFile, 'default') !== false;
-        $defaultFilePath=   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.jpg';
+        $defaultFilePath=   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.png';
 
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
