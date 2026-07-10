@@ -74,6 +74,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('customerVideoCaraPemasangan/(:any)', 'Assets::customerVideoCaraPemasangan/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
+    $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
@@ -81,6 +82,7 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
     $routes->post('getDetailCompanyProfile', $functionRoute.'::getDetailCompanyProfile');
     $routes->post('getDetailVideoCaraPemasangan', $functionRoute.'::getDetailVideoCaraPemasangan');
+    $routes->post('getDataAkunSosmedMarketplace', $functionRoute.'::getDataAkunSosmedMarketplace');
 });
 $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
 

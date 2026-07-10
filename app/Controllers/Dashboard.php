@@ -134,17 +134,22 @@ class Dashboard extends ResourceController
             ];
         }
 
+        //SOSMED MARKETPLACE
+        $dataTipeSosmedMarketplace  =   $dashboardModel->getTipeSosmedMarketplace();
+        $dataTipeSosmedMarketplace  =   encodeDatabaseObjectResultKey($dataTipeSosmedMarketplace, ['IDTIPESOSMEDMARKETPLACE']);
+
         return $this
                 ->setResponseFormat('json')
                 ->respond([
-                    "profileData"           =>  $profileData,
-                    "loyaltiDetail"         =>  $loyaltiDetail,
-                    "reviewMarketing"       =>  $reviewMarketing,
-                    "slideBanner"           =>  $slideBanner,
-                    "videoCompanyProfile"   =>  $videoCompanyProfile,
-                    "videoCaraPemasangan"   =>  $videoCaraPemasangan,
-                    "dataMerk"              =>  $dataMerk,
-                    "dataOrder"             =>  $dataOrder
+                    "profileData"               =>  $profileData,
+                    "loyaltiDetail"             =>  $loyaltiDetail,
+                    "reviewMarketing"           =>  $reviewMarketing,
+                    "slideBanner"               =>  $slideBanner,
+                    "videoCompanyProfile"       =>  $videoCompanyProfile,
+                    "videoCaraPemasangan"       =>  $videoCaraPemasangan,
+                    "dataMerk"                  =>  $dataMerk,
+                    "dataTipeSosmedMarketplace" =>  $dataTipeSosmedMarketplace,
+                    "dataOrder"                 =>  $dataOrder
                 ]);
     }
 
@@ -229,6 +234,30 @@ class Dashboard extends ResourceController
 
         return $this->setResponseFormat('json')->respond([
             "detailVideoCaraPemasangan"  =>  $detailVideoCaraPemasangan
+        ]);
+    }
+
+    public function getDataAkunSosmedMarketplace()
+    {
+        $rules      =   [
+            'idTipeSosmedMarketplace'   =>  ['label' => 'Id Tipe Sosmed Marketplace', 'rules' => 'required|alpha_numeric'],
+        ];
+
+        $messages   =   [
+            'idTipeSosmedMarketplace'   =>  [
+                'required'      => 'Tipe Sosmed Marketplace yang dipilih tidak valid, silakan coba lagi nanti',
+                'alpha_numeric' => 'Tipe Sosmed Marketplace yang dipilih tidak valid, silakan coba lagi nanti'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        $dashboardModel             =   new DashboardModel();
+        $idTipeSosmedMarketplace    =   $this->request->getVar('idTipeSosmedMarketplace');
+        $idTipeSosmedMarketplace    =   hashidDecode($idTipeSosmedMarketplace);
+        $dataSosmedMarketplace      =   $dashboardModel->getDataSosmedMarketplace($idTipeSosmedMarketplace);
+
+        return $this->setResponseFormat('json')->respond([
+            "dataSosmedMarketplace"  =>  $dataSosmedMarketplace
         ]);
     }
 }

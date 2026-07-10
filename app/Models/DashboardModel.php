@@ -198,4 +198,24 @@ class DashboardModel extends Model
 
         return $this->get()->getRowArray();
     }
+
+    public function getTipeSosmedMarketplace()
+    {
+        $this->select('IDTIPESOSMEDMARKETPLACE, NAMATIPE, CONCAT("'.BASE_URL_ASSETS_CUSTOMER_SOSMED_MARKETPLACE.'", FILEICON) AS FILEICON');
+        $this->from('m_tipesosmedmarketplace', true);
+        $this->where('STATUS', 1);
+        $this->orderBy('URUTAN', 'ASC');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataSosmedMarketplace($idTipeSosmedMarketplace)
+    {
+        $this->select('NAMAAKUN, URL');
+        $this->from('t_sosmedmarketplace', true);
+        $this->where('IDTIPESOSMEDMARKETPLACE', $idTipeSosmedMarketplace);
+        $this->orderBy('URUTAN', 'ASC');
+
+        return $this->get()->getResultObject();
+    }
 }
