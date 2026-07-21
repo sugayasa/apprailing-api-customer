@@ -89,6 +89,12 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
 });
 $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
 
+$routes->group('kritikSaran', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+    $functionRoute =   'KritikSaran';
+    $routes->post('getDataKritikSaran', $functionRoute.'::getDataKritikSaran');
+    $routes->post('saveKritikSaran', $functionRoute.'::saveKritikSaran');
+});
+
 $routes->group('katalogBrosur', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'KatalogBrosur';
     $routes->post('getDataMerkKatalog', $functionRoute.'::getDataMerkKatalog');
