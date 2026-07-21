@@ -161,6 +161,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function imageGaleriProyek($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_PHOTO_GALERI_PROYEK.$nameFile;
+        $isDefault      =   strpos($nameFile, 'noimage') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_GALERI_PROYEK  .'noimage.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function customerMerk($nameFile)
     {
         $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$nameFile;

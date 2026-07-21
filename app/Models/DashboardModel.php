@@ -152,6 +152,29 @@ class DashboardModel extends Model
 
         return $this->get()->getRowArray();
     }
+    
+    public function getDataGaleriProyek()
+    {	
+        $this->select('IDGALERIPROYEK, NAMAKLIEN, IMAGE');
+        $this->from('t_galeriproyek', true);
+        $this->where('STATUS', 1);
+        $this->orderBy('URUTAN', 'DESC');
+        
+        return $this;
+	}
+
+    public function getDetailGaleriProyek($idGaleriProyek)
+    {
+        $this->select(
+            "B.NAMAMERK, A.NAMAKLIEN, A.ALAMATPROYEK, A.DESKRIPSI, A.IMAGE"
+        );
+        $this->from('t_galeriproyek AS A', TRUE);
+        $this->join('m_merk AS B', 'A.IDMERKUTAMA = B.IDMERK', 'LEFT');
+        $this->where('IDGALERIPROYEK', $idGaleriProyek);
+        $this->limit(1);
+
+        return $this->get()->getRowArray();
+    }
 
     public function getDataVideoCompanyProfile()
     {

@@ -72,6 +72,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
     $routes->get('customerVideoCompanyProfile/(:any)', 'Assets::customerVideoCompanyProfile/$1');
     $routes->get('customerVideoCaraPemasangan/(:any)', 'Assets::customerVideoCaraPemasangan/$1');
+    $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
     $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
@@ -80,6 +81,8 @@ $routes->group('assets', [], function($routes) {
 $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
     $functionRoute =   'Dashboard';
     $routes->post('getDataDashboard', $functionRoute.'::getDataDashboard');
+    $routes->post('getDataGaleriProyek', $functionRoute.'::getDataGaleriProyek');
+    $routes->post('getDetailGaleriProyek', $functionRoute.'::getDetailGaleriProyek');
     $routes->post('getDetailCompanyProfile', $functionRoute.'::getDetailCompanyProfile');
     $routes->post('getDetailVideoCaraPemasangan', $functionRoute.'::getDetailVideoCaraPemasangan');
     $routes->post('getDataAkunSosmedMarketplace', $functionRoute.'::getDataAkunSosmedMarketplace');
