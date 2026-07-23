@@ -46,7 +46,7 @@ class KritikSaranModel extends Model
 
     public function getDataKritikSaran($idCustomer)
     {	
-        $this->select("SUBYEK, PESAN, DATE_FORMAT(INPUTTANGGALWAKTU, '%d %m %Y %H:%i') AS INPUTTANGGALWAKTUSTR");
+        $this->select("IDKRITIKSARAN, SUBYEK, PESAN, DATE_FORMAT(INPUTTANGGALWAKTU, '%d %m %Y %H:%i') AS INPUTTANGGALWAKTUSTR");
         return $this;
 	}
 
