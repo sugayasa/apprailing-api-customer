@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\I18n\Time;
 use App\Models\MainOperation;
+use App\Models\StatsKunjunganModel;
 use App\Models\AccessModel;
 
 #[AllowDynamicProperties]
@@ -76,6 +77,9 @@ class Auth implements FilterInterface
             if($minutesDifference > MAX_INACTIVE_SESSION_MINUTES && $urlSegment2 != 'login'){
                 return throwResponseUnauthorized('Sesi berakhir, silakan masuk kembali untuk melanjutkan');
             }
+
+            $statsKunjunganModel    =   new StatsKunjunganModel();
+            $statsKunjunganModel->insertLogKunjungan($idCustomer, $hardwareIDHeader, $request->currentDateTime, $urlSegment2);
 
             if(isset($arguments) && $arguments[0] == 'mustNotBeLoggedIn'){
                 if(isset($idSession) && $idSession != "" && intval($idSession) != 0){
