@@ -72,6 +72,8 @@ $routes->group('assets', [], function($routes) {
     $routes->get('customerSlideBanner/(:any)', 'Assets::customerSlideBanner/$1');
     $routes->get('customerVideoCompanyProfile/(:any)', 'Assets::customerVideoCompanyProfile/$1');
     $routes->get('customerVideoCaraPemasangan/(:any)', 'Assets::customerVideoCaraPemasangan/$1');
+    $routes->get('imageGaleriKlien/logo/(:any)', 'Assets::imageGaleriKlienLogo/$1');
+    $routes->get('imageGaleriKlien/proyek/(:any)', 'Assets::imageGaleriKlienProyek/$1');
     $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
@@ -88,6 +90,12 @@ $routes->group('dashboard', ['filter' => 'auth:allowNotLoggedIn'], function($rou
     $routes->post('getDataAkunSosmedMarketplace', $functionRoute.'::getDataAkunSosmedMarketplace');
 });
 $routes->get('dashboard/getDetailSlideBanner/(:any)', 'Dashboard::getDetailSlideBanner/$1');
+
+$routes->group('galeriKlien', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'GaleriKlien';
+    $routes->post('getDataKlien', $functionRoute.'::getDataKlien');
+    $routes->post('getDetailGaleri', $functionRoute.'::getDetailGaleri');
+});
 
 $routes->group('kritikSaran', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $functionRoute =   'KritikSaran';
