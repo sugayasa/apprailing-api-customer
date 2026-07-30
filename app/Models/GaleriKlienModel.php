@@ -45,9 +45,15 @@ class GaleriKlienModel extends Model
 
     public function getDataKlien()
     {	
-        $this->select("IDKLIEN, NAMAKLIEN, LOGO");
-        $this->from('m_klien', TRUE);
-        $this->where('STATUS', 1);
+        $this->select("A.IDKLIEN, A.NAMAKLIEN, A.LOGO");
+        $this->from('m_klien AS A', TRUE);
+        $this->join('t_galeriklien AS B', 'A.IDKLIEN = B.IDKLIEN', 'LEFT');
+        $this->where('A.STATUS', 1);
+        $this->groupBy('A.IDKLIEN');
+        $this->groupBy('A.NAMAKLIEN');
+        $this->groupBy('A.LOGO');
+        $this->having('COUNT(B.IDKLIEN) > 0');
+
         return $this;
 	}
 
