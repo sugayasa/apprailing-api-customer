@@ -60,7 +60,7 @@ class GaleriKlienModel extends Model
     public function getDetailGaleriKlien($idKlien)
     {	
         $this->select(
-            "B.NAMAMERK, CONCAT('".BASE_URL_ASSETS_CUSTOMER_MERK."', B.LOGO) AS LOGOMERK, A.DESKRIPSI, A.IMAGE"
+            "A.IDGALERIKLIEN, B.NAMAMERK, CONCAT('".BASE_URL_ASSETS_CUSTOMER_MERK."', B.LOGO) AS LOGOMERK, A.DESKRIPSI, A.IMAGE"
         );
         $this->from('t_galeriklien AS A', TRUE);
         $this->join('m_merk AS B', 'A.IDMERKUTAMA = B.IDMERK', 'LEFT');

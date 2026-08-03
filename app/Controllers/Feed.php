@@ -68,6 +68,11 @@ class Feed extends ResourceController
 
         if($totalNumberData > 0){
             $dataFeed   =   $baseData->orderBy('A.INPUTTANGGALWAKTU DESC')->asObject()->findAll($dataPerPage, ($page - 1) * $dataPerPage);
+
+            foreach ($dataFeed as $keyFeed) {
+                $mainOperation->insertDataStatistikKonten(903, $keyFeed->IDFEED, $this->userData, $this->currentDateTime);
+            }
+
             $dataFeed   =   encodeDatabaseObjectResultKey($dataFeed, ['IDFEED']);
             return $this->setResponseFormat('json')->respond([
                 "dataFeed"      =>  $dataFeed,

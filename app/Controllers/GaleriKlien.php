@@ -107,8 +107,12 @@ class GaleriKlien extends ResourceController
         if(is_null($detailGaleri)) {
             return throwResponseNotFound('Detail galeri klien tidak ditemukan');
         } else {
+            $mainOperation = new MainOperation();
+            
             foreach($detailGaleri as $keyDetailGaleri){
                 $keyDetailGaleri->IMAGE =   json_decode($keyDetailGaleri->IMAGE, true);
+                $mainOperation->insertDataStatistikKonten(901, $keyDetailGaleri->IDGALERIKLIEN, $this->userData, $this->currentDateTime);
+                unset($keyDetailGaleri->IDGALERIKLIEN);
             }
 
             return $this->setResponseFormat('json')->respond([

@@ -182,6 +182,24 @@ class MainOperation extends Model
         }
     }
 
+    public function insertDataStatistikKonten($tipeKonten, $idPrimaryKonten, $userData, $tanggalWaktu)
+    {
+        $arrInsert  =   [
+            'IDTIPEKONTEN'      =>  $tipeKonten ?? 0,
+            'IDPRIMARYKONTEN'   =>  $idPrimaryKonten ?? 0,
+            'IDCUSTOMER'        =>  $userData->idCustomer ?? 0,
+            'HARDWAREID'        =>  $userData->hardwareID ?? null,
+            'TANGGALWAKTU'      =>  $tanggalWaktu ?? null,
+        ];
+
+        try {
+            $this->insertDataTable('stats_konten', $arrInsert);
+            return true;
+        } catch (\Throwable $th) {
+            return true;
+        }
+    }
+
     public function isDataExist($tableName, $arrField)
     {
         $db   =   \Config\Database::connect();

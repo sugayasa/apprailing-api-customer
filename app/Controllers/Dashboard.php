@@ -156,11 +156,13 @@ class Dashboard extends ResourceController
 
     public function getDetailSlideBanner($idSlideBanner)
     {
+        $mainOperation      =   new MainOperation();
         $dashboardModel     =   new DashboardModel();
         $idSlideBanner      =   hashidDecode($idSlideBanner, true);
         $detailSlideBanner  =   $dashboardModel->getDetailSlideBanner($idSlideBanner);
         
         if(is_null($detailSlideBanner)) return view('errors/cli/artikel_tidak_ditemukan');
+        $mainOperation->insertDataStatistikKonten(900, $idSlideBanner, $this->userData, $this->currentDateTime);
         return view('detail_artikel', [
             'konten' => $detailSlideBanner['KONTEN']
         ]);
@@ -250,6 +252,9 @@ class Dashboard extends ResourceController
             );
         }
 
+        $mainOperation = new MainOperation();
+        $mainOperation->insertDataStatistikKonten(902, $idGaleriProyek, $this->userData, $this->currentDateTime);
+            
         $arrImage   =   json_decode($detailGaleriProyek['IMAGE'], true);
         if(is_array($arrImage) && count($arrImage) > 0){
             $detailGaleriProyek['IMAGE']    =   array_map(function($image) {
