@@ -188,8 +188,8 @@ class MainOperation extends Model
             'IDTIPEKONTEN'      =>  $tipeKonten ?? 0,
             'IDPRIMARYKONTEN'   =>  $idPrimaryKonten ?? 0,
             'IDCUSTOMER'        =>  $userData->idCustomer ?? 0,
-            'HARDWAREID'        =>  $userData->hardwareID ?? null,
-            'TANGGALWAKTU'      =>  $tanggalWaktu ?? null,
+            'HARDWAREID'        =>  $userData->hardwareID ?? '-',
+            'TANGGALWAKTU'      =>  $tanggalWaktu ?? date('Y-m-d H:i:s'),
         ];
 
         try {
