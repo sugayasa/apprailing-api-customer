@@ -97,6 +97,12 @@ $routes->group('galeriKlien', ['filter' => 'auth:allowNotLoggedIn'], function($r
     $routes->post('getDetailGaleri', $functionRoute.'::getDetailGaleri');
 });
 
+$routes->group('galeriProyek', ['filter' => 'auth:allowNotLoggedIn'], function($routes) {
+    $functionRoute =   'GaleriProyek';
+    $routes->post('getDataProyek', $functionRoute.'::getDataProyek');
+    $routes->post('getDetailGaleri', $functionRoute.'::getDetailGaleri');
+});
+
 $routes->group('kritikSaran', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $functionRoute =   'KritikSaran';
     $routes->post('getDataKritikSaran', $functionRoute.'::getDataKritikSaran');
