@@ -69,9 +69,9 @@ class GaleriProyek extends ResourceController
             foreach ($dataGaleriProyek as &$galeriProyek) {
                 $arrImage   =   json_decode($galeriProyek->IMAGE, true);
                 if(is_array($arrImage) && count($arrImage) > 0){
-                    $galeriProyek->IMAGE    =   BASE_URL_ASSETS_CUSTOMER_PRODUK.$arrImage[0];
+                    $galeriProyek->IMAGE    =   BASE_URL_ASSETS_GALERI_PROYEK.$arrImage[0];
                 } else {
-                    $galeriProyek->IMAGE    =   BASE_URL_ASSETS_CUSTOMER_PRODUK.'noimage.jpg';
+                    $galeriProyek->IMAGE    =   BASE_URL_ASSETS_GALERI_PROYEK.'noimage.jpg';
                 }
             }
 
@@ -124,10 +124,10 @@ class GaleriProyek extends ResourceController
         $arrImage   =   json_decode($detailGaleriProyek['IMAGE'], true);
         if(is_array($arrImage) && count($arrImage) > 0){
             $detailGaleriProyek['IMAGE']    =   array_map(function($image) {
-                return BASE_URL_ASSETS_CUSTOMER_PRODUK.$image;
+                return BASE_URL_ASSETS_GALERI_PROYEK.$image;
             }, $arrImage);
         } else {
-            $detailGaleriProyek['IMAGE']    =   [BASE_URL_ASSETS_CUSTOMER_PRODUK.'noimage.jpg'];
+            $detailGaleriProyek['IMAGE']    =   [BASE_URL_ASSETS_GALERI_PROYEK.'noimage.jpg'];
         }
 
         return $this->setResponseFormat('json')->respond([
